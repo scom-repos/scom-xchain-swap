@@ -1,0 +1,24 @@
+{
+    "name": "@scom/scom-xchain-swap",
+    "type": "widget",
+    "version": "0.1.0",
+    "dependencies": [
+        "@ijstech/components",
+        "@ijstech/eth-wallet",
+        "@scom/scom-token-list",
+        "@scom/scom-network-list",
+        "@scom/scom-wallet-modal",
+        "@scom/scom-network-picker",
+        "@scom/scom-commission-proxy-contract",
+        "@ijstech/eth-contract",
+        "@scom/oswap-cross-chain-bridge-contract",
+        "@scom/oswap-openswap-contract",
+        "@scom/scom-multicall",
+        "@scom/scom-token-modal",
+        "@scom/scom-token-input",
+        "@scom/scom-tx-status-modal",
+        "@scom/scom-dapp-container",
+        "@scom/scom-blocknote-sdk",
+        "@scom/scom-commission-fee-setup"
+    ]
+}
