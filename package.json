@@ -1,0 +1,52 @@
+{
+    "name": "@scom/scom-xchain-swap",
+    "version": "0.1.0",
+    "main": "dist/index.js",
+    "plugin": "dist",
+    "pluginTypes": "pluginTypes/index.d.ts",
+    "types": "pluginTypes/index.d.ts",
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "scripts": {
+        "build": "rm -rf dist && npx @ijstech/compiler",
+        "serve": "npx @ijstech/cli serve 8080",
+        "test": "cd test && npm run test && cd .."
+    },
+    "dependencies": {
+        "@ijstech/components": "^0.1.108",
+        "@ijstech/eth-contract": "^0.1.25",
+        "@ijstech/eth-wallet": "^0.1.101",
+        "@ijstech/eth-wallet-web3modal": "^0.2.0",
+        "@scom/oswap-openswap-contract": "^0.1.2",
+        "@scom/oswap-chainlink-contract": "^0.1.1",
+        "@scom/oswap-cross-chain-bridge-contract": "0.1.0",
+        "@scom/scom-dapp-container": "^0.1.20",
+        "@scom/scom-blocknote-sdk": "^0.1.2",
+        "@scom/scom-coin98-wallet": "^0.1.1",
+        "@scom/scom-trust-wallet": "^0.1.1",
+        "@scom/scom-binance-chain-wallet": "^0.1.1",
+        "@scom/scom-onto-wallet": "^0.1.1",
+        "@scom/scom-bit-keep-wallet": "^0.1.1",
+        "@scom/scom-frontier-wallet": "^0.1.1",
+        "@scom/scom-network-list": "^0.1.12",
+        "@scom/scom-multicall": "^0.1.6",
+        "@scom/scom-commission-fee-setup": "^0.1.1",
+        "@scom/scom-token-list": "^0.1.1",
+        "@scom/scom-wallet-modal": "^0.1.0",
+        "@scom/scom-dex-list": "^0.1.3",
+        "@scom/scom-token-input": "^0.1.1",
+        "@scom/scom-network-picker": "^0.1.4",
+        "@scom/scom-tx-status-modal": "^0.1.0",
+        "@scom/scom-storage": "^0.1.2",
+        "@scom/scom-commission-proxy-contract": "^0.1.9"
+    },
+    "devDependencies": {
+        "@ijstech/cli": "^0.1.33",
+        "@ijstech/compiler": "^0.1.41",
+        "@types/node": "14.17",
+        "ts-node": "10.1.0",
+        "tsconfig-paths": "3.10.1",
+        "typescript": "5.0.4"
+    }
+}
