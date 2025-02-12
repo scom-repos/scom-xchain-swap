@@ -1579,7 +1579,7 @@ declare module "@scom/scom-xchain-swap" {
         APPROVING = 1,
         NONE = 2
     }
-    interface ScomXchainWidgetElement extends ControlElement {
+    interface ScomXchainSwapElement extends ControlElement {
         campaignId?: number;
         lazyLoad?: boolean;
         tokens?: ITokenConfig[];
@@ -1597,11 +1597,11 @@ declare module "@scom/scom-xchain-swap" {
     global {
         namespace JSX {
             interface IntrinsicElements {
-                ['i-scom-xchain-widget']: ScomXchainWidgetElement;
+                ['i-scom-xchain-swap']: ScomXchainSwapElement;
             }
         }
     }
-    export default class ScomXchainWidget extends Module implements BlockNoteSpecs {
+    export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
         private xchainSwapContainer;
         private xchainReceiveContainer;
         private payBalance;
@@ -1684,7 +1684,7 @@ declare module "@scom/scom-xchain-swap" {
         private modalSwitchNetwork;
         private lbSwitchNetwork;
         tag: any;
-        constructor(parent?: Container, options?: any);
+        constructor(parent?: Container, options?: ScomXchainSwapElement);
         onLoad(): void;
         addBlock(blocknote: any, executeFn: executeFnType, callbackFn?: callbackFnType): {
             block: any;
