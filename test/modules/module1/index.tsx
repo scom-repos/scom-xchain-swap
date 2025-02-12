@@ -2,12 +2,12 @@ import { Module, customModule, Container, application } from '@ijstech/component
 import { getMulticallInfoList } from '@scom/scom-multicall';
 import { INetwork } from '@ijstech/eth-wallet';
 import getNetworkList from '@scom/scom-network-list';
-import ScomXchainWidget from '@scom/scom-xchain-swap'
+import ScomXchainSwap from '@scom/scom-xchain-swap'
 import ScomWidgetTest from '@scom/scom-widget-test';
 
 @customModule
 export default class Module1 extends Module {
-  private xchainWidget: ScomXchainWidget;
+  private xchainSwap: ScomXchainSwap;
   private widgetModule: ScomWidgetTest;
 
   constructor(parent?: Container, options?: any) {
@@ -47,11 +47,11 @@ export default class Module1 extends Module {
   }
 
   private async onShowConfig() {
-    const editor = this.xchainWidget.getConfigurators().find(v => v.target === 'Editor');
+    const editor = this.xchainSwap.getConfigurators().find(v => v.target === 'Editor');
     const widgetData = await editor.getData();
     if (!this.widgetModule) {
       this.widgetModule = await ScomWidgetTest.create({
-        widgetName: 'scom-xchain-widget',
+        widgetName: 'scom-xchain-swap',
         onConfirm: (data: any, tag: any) => {
           editor.setData(data);
           editor.setTag(tag);
@@ -81,8 +81,8 @@ export default class Module1 extends Module {
           gap="1rem"
         >
           <i-button caption="Config" onClick={this.onShowConfig} width={160} padding={{ top: 5, bottom: 5 }} margin={{ left: 'auto', right: 20 }} font={{ color: '#fff' }} />
-          <i-scom-xchain-widget
-            id="xchainWidget"
+          <i-scom-xchain-swap
+            id="xchainSwap"
             showHeader={false}
             showFooter={false}
             urlParamsEnabled={true}

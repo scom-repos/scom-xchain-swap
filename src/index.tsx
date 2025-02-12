@@ -75,7 +75,7 @@ export enum ApprovalStatus {
 
 const defaultInput = '1';
 
-interface ScomXchainWidgetElement extends ControlElement {
+interface ScomXchainSwapElement extends ControlElement {
   campaignId?: number;
   lazyLoad?: boolean;
   tokens?: ITokenConfig[];
@@ -95,14 +95,14 @@ interface ScomXchainWidgetElement extends ControlElement {
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      ['i-scom-xchain-widget']: ScomXchainWidgetElement;
+      ['i-scom-xchain-swap']: ScomXchainSwapElement;
     }
   }
 }
 
 @customModule
-@customElements('i-scom-xchain-widget')
-export default class ScomXchainWidget extends Module implements BlockNoteSpecs {
+@customElements('i-scom-xchain-swap')
+export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
   private xchainSwapContainer: Container;
   private xchainReceiveContainer: Panel;
   private payBalance: Label;
@@ -194,7 +194,7 @@ export default class ScomXchainWidget extends Module implements BlockNoteSpecs {
   private lbSwitchNetwork: Label;
   tag: any = {};
 
-  constructor(parent?: Container, options?: any) {
+  constructor(parent?: Container, options?: ScomXchainSwapElement) {
     super(parent, options);
     this.initModels();
   }
@@ -237,7 +237,7 @@ export default class ScomXchainWidget extends Module implements BlockNoteSpecs {
         render: (block: Block) => {
           const wrapper = new Panel();
           const props = JSON.parse(JSON.stringify(block.props));
-          const customElm = new ScomXchainWidget(wrapper, { ...props });
+          const customElm = new ScomXchainSwap(wrapper, { ...props });
           if (typeof callbackFn === 'function') callbackFn(customElm, block);
           wrapper.appendChild(customElm);
           return {

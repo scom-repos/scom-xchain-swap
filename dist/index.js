@@ -4348,7 +4348,7 @@ define("@scom/scom-xchain-swap/model/index.ts", ["require", "exports", "@scom/sc
 });
 define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "@ijstech/eth-wallet", "@scom/scom-xchain-swap/store/index.ts", "@scom/scom-xchain-swap/global/index.ts", "@scom/scom-xchain-swap/crosschain-utils/index.ts", "@scom/scom-xchain-swap/price-info/index.tsx", "@scom/scom-token-list", "@scom/scom-xchain-swap/expert-mode-settings/index.tsx", "@scom/scom-xchain-swap/transaction-settings/index.tsx", "@scom/scom-xchain-swap/index.css.ts", "@scom/scom-xchain-swap/data.json.ts", "@scom/scom-blocknote-sdk", "@scom/scom-xchain-swap/languages/index.ts", "@scom/scom-xchain-swap/model/index.ts", "@scom/scom-xchain-swap/assets.ts"], function (require, exports, components_14, eth_wallet_6, index_17, index_18, index_19, index_20, scom_token_list_5, index_21, index_22, index_css_4, data_json_4, scom_blocknote_sdk_1, index_23, index_24, assets_2) {
     "use strict";
-    var ScomXchainWidget_1;
+    var ScomXchainSwap_1;
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ApprovalStatus = void 0;
     const Theme = components_14.Styles.Theme.ThemeVars;
@@ -4359,7 +4359,7 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
         ApprovalStatus[ApprovalStatus["NONE"] = 2] = "NONE";
     })(ApprovalStatus = exports.ApprovalStatus || (exports.ApprovalStatus = {}));
     const defaultInput = '1';
-    let ScomXchainWidget = ScomXchainWidget_1 = class ScomXchainWidget extends components_14.Module {
+    let ScomXchainSwap = ScomXchainSwap_1 = class ScomXchainSwap extends components_14.Module {
         constructor(parent, options) {
             super(parent, options);
             this.swapButtonText = '';
@@ -4883,7 +4883,7 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
                 render: (block) => {
                     const wrapper = new components_14.Panel();
                     const props = JSON.parse(JSON.stringify(block.props));
-                    const customElm = new ScomXchainWidget_1(wrapper, { ...props });
+                    const customElm = new ScomXchainSwap_1(wrapper, { ...props });
                     if (typeof callbackFn === 'function')
                         callbackFn(customElm, block);
                     wrapper.appendChild(customElm);
@@ -5835,19 +5835,19 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
     };
     __decorate([
         (0, components_14.observable)()
-    ], ScomXchainWidget.prototype, "swapButtonText", void 0);
+    ], ScomXchainSwap.prototype, "swapButtonText", void 0);
     __decorate([
         (0, components_14.observable)()
-    ], ScomXchainWidget.prototype, "lastUpdatedText", void 0);
+    ], ScomXchainSwap.prototype, "lastUpdatedText", void 0);
     __decorate([
         (0, components_14.observable)()
-    ], ScomXchainWidget.prototype, "estimateMsg", void 0);
+    ], ScomXchainSwap.prototype, "estimateMsg", void 0);
     __decorate([
         (0, components_14.observable)()
-    ], ScomXchainWidget.prototype, "payOrReceiveText", void 0);
-    ScomXchainWidget = ScomXchainWidget_1 = __decorate([
+    ], ScomXchainSwap.prototype, "payOrReceiveText", void 0);
+    ScomXchainSwap = ScomXchainSwap_1 = __decorate([
         components_14.customModule,
-        (0, components_14.customElements)('i-scom-xchain-widget')
-    ], ScomXchainWidget);
-    exports.default = ScomXchainWidget;
+        (0, components_14.customElements)('i-scom-xchain-swap')
+    ], ScomXchainSwap);
+    exports.default = ScomXchainSwap;
 });
