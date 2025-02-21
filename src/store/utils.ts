@@ -75,49 +75,6 @@ export function forEachNumberIndex<T>(list: { [index: number]: T }, callbackFn: 
   }
 }
 
-export async function forEachStringIndexAwait<T>(list: { [index: string]: T }, callbackFn: (item: T, index: string) => Promise<void>) {
-  for (const index in list) {
-    if (Object.prototype.hasOwnProperty.call(list, index)) {
-      await callbackFn(list[index], index);
-    }
-  }
-}
-
-export function forEachStringIndex<T>(list: { [index: string]: T }, callbackFn: (item: T, index: string) => void) {
-  for (const index in list) {
-    if (Object.prototype.hasOwnProperty.call(list, index)) {
-      callbackFn(list[index], index);
-    }
-  }
-}
-
-export function filterNumberIndexedList<T>(
-  list: { [index: number]: T },
-  filterFn: (item: T, index: number) => boolean
-) {
-  let out: { [index: number]: T } = {};
-  for (const index in list) {
-    let indexBN = new BigNumber(index);
-    let indexN = indexBN.toNumber();
-    if (
-      Object.prototype.hasOwnProperty.call(list, index)
-      && indexBN.isInteger()
-      && filterFn(list[indexN], indexN)
-    ) out[indexN] = list[indexN];
-  }
-  return out;
-}
-
-export function filterVaultInsideGroup(vgs: VaultGroupConstant[], filterFn: (vault: VaultConstant, chainId: number) => boolean) {
-  return vgs.map(group => {
-    return {
-      assetName: group.assetName,
-      vaultType: group.vaultType,
-      vaults: filterNumberIndexedList(group.vaults, filterFn),
-    }
-  });
-}
-
 export interface VaultGroupStore {
   assetName: string,//must be unique
   vaultType: VaultType,
@@ -178,65 +135,6 @@ export enum VaultOrderStatus {
   RequestAmend,
 
   Expired,
-}
-
-export interface VaultOrderItem {
-  assetName: string,
-  fromVaultAddress: string,
-  toVaultAddress: string,
-  orderId: number,
-  expire: BigNumber,
-  fromNetwork: IExtendedNetwork,
-  toNetwork: IExtendedNetwork,
-  price: string,
-  protocolFee: BigNumber,
-  fromAmount: string,
-  fromToken: TokenConstant,
-  toToken: TokenConstant,
-  toAmount: string,
-  minOutAmount: string,
-  sourceVaultToken: TokenConstant,
-  sourceVaultInAmount: string, //TODO #xchain order check
-  statusCode: VaultOrderStatus,
-  status: string,
-  sender: string, //FIXME find sender
-  //newOrderTxId: string,
-  //swapTxId: string,
-  //withdrawTxId: string,
-  //amendTxId: string
-}
-
-interface Logo {
-  default: string;
-  mobile: string;
-  footer: string;
-}
-
-interface FooterPageInfo {
-  caption: string;
-  link: string;
-}
-
-interface SocialMediaInfo {
-  img: string;
-  link: string;
-}
-
-interface TokenInfo {
-  symbol: string;
-  img: string;
-}
-
-export interface ProjectInfo {
-  logo: Logo;
-  versionText: string;
-}
-
-export interface IParams {
-  projectInfo: ProjectInfo;
-  footerPagesInfo: FooterPageInfo[];
-  socialMediaInfo: SocialMediaInfo[];
-  tokenInfo: TokenInfo;
 }
 
 export type ProxyAddresses = { [key: number]: string };
@@ -426,89 +324,6 @@ export class State {
   }
 }
 
-export function isContractVaultOrderStatus(n: number): n is ContractVaultOrderStatus {
-  return (n <= 6 && n >= 0);
-}
-
-export function isVaultOrderStatus(n: number): n is VaultOrderStatus {
-  return (n <= 6 && n >= 0);
-}
-
-export function castToVaultOrderStatus(n: number): ContractVaultOrderStatus {
-  switch (n) {
-    case 0:
-      return ContractVaultOrderStatus.NotSpecified;
-    case 1:
-      return ContractVaultOrderStatus.Pending;
-    case 2:
-      return ContractVaultOrderStatus.Executed;
-    case 3:
-      return ContractVaultOrderStatus.RequestCancel;
-    case 4:
-      return ContractVaultOrderStatus.RefundApproved;
-    case 5:
-      return ContractVaultOrderStatus.Cancelled;
-    case 6:
-      return ContractVaultOrderStatus.RequestAmend;
-  }
-  return null;
-}
-
-export function determineOrderStatus(expire: number | BigNumber, fromChainStatus: ContractVaultOrderStatus, toChainStatus: ContractVaultOrderStatus): VaultOrderStatus {
-  switch (toChainStatus) {
-    case ContractVaultOrderStatus.Executed:
-      return VaultOrderStatus.Executed;
-
-    case ContractVaultOrderStatus.RequestCancel:
-      if (fromChainStatus == ContractVaultOrderStatus.RefundApproved) return VaultOrderStatus.RefundApproved;
-      if (fromChainStatus == ContractVaultOrderStatus.Cancelled) return VaultOrderStatus.Cancelled;
-      return VaultOrderStatus.RequestCancel;
-
-    case ContractVaultOrderStatus.RefundApproved:
-      return VaultOrderStatus.RefundApproved;
-
-    case ContractVaultOrderStatus.Cancelled:
-      return VaultOrderStatus.Cancelled;
-
-    case ContractVaultOrderStatus.RequestAmend:
-      return VaultOrderStatus.RequestAmend;
-
-    case ContractVaultOrderStatus.Pending:
-      if (fromChainStatus == ContractVaultOrderStatus.Pending && new BigNumber(new Date().getTime()).shiftedBy(-3).gte(expire)) {
-        return VaultOrderStatus.Expired;
-      } else {
-        return VaultOrderStatus.Pending;
-      }
-    case ContractVaultOrderStatus.NotSpecified: {
-      switch (fromChainStatus) {
-        case ContractVaultOrderStatus.Executed:
-          return VaultOrderStatus.Executed;
-
-        case ContractVaultOrderStatus.RequestCancel:
-          return VaultOrderStatus.RequestCancel;
-
-        case ContractVaultOrderStatus.RefundApproved:
-          return VaultOrderStatus.RefundApproved;
-
-        case ContractVaultOrderStatus.Cancelled:
-          return VaultOrderStatus.Cancelled;
-
-        case ContractVaultOrderStatus.RequestAmend:
-          return VaultOrderStatus.RequestAmend;
-
-        case ContractVaultOrderStatus.NotSpecified:
-        case ContractVaultOrderStatus.Pending:
-          if (new BigNumber(new Date().getTime()).shiftedBy(-3).gte(expire)) {
-            return VaultOrderStatus.Expired;
-          } else {
-            return VaultOrderStatus.Pending;
-          }
-      }
-    }
-
-  }
-}
-
 function castToVaultStore(vc: VaultConstant): VaultStore {
   return {
     ...vc,
@@ -546,7 +361,7 @@ function matchFilter<O extends { [keys: string]: any }>(list: O[], filter: Parti
     switch (typeof filter[f]) {
       case 'boolean':
         if (filter[f] === false) {
-          return item[f] === undefined || item[f] === null;
+          return !item[f];
         }
       // also case for filter[f] === true 
       case 'string':
@@ -606,11 +421,6 @@ export async function switchNetwork(chainId: number) {
 export const truncateAddress = (address: string) => {
   if (address === undefined || address === null) return '';
   return address.substr(0, 6) + '...' + address.substr(-4);
-}
-
-export function getChainId() {
-  // return isWalletConnected() ? Wallet.getClientInstance().chainId  : getDefaultChainId();
-  return Wallet.getClientInstance().chainId;
 }
 
 export function getAddresses(chainId: number) {

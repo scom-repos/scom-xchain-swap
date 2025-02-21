@@ -7,14 +7,14 @@ import { expertModeJson } from '../languages/index';
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      ['xchain-expert-mode-settings']: ControlElement;
+      ['xchain-swap-expert-mode-settings']: ControlElement;
     }
   }
 };
 
 @customModule
-@customElements('xchain-expert-mode-settings')
-export class ExpertModeSettings extends Module {
+@customElements('xchain-swap-expert-mode-settings')
+export class XchainSwapExpertModeSettings extends Module {
   private expertModal: Modal;
   private $eventBus: IEventBus;
   private state: State;

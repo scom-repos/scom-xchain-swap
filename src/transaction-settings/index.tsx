@@ -7,7 +7,7 @@ import {
   Modal,
   Panel,
 } from '@ijstech/components';
-import { TransactionSettingsLayout } from '../transaction-settings-layout/index';
+import { XchainSwapTransactionSettingsLayout } from '../transaction-settings-layout/index';
 import styleClass from './index.css';
 import { State } from '../store/index';
 import { transactionsJson } from '../languages/index';
@@ -15,16 +15,16 @@ import { transactionsJson } from '../languages/index';
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      ['xchain-transaction-settings']: ControlElement;
+      ['xchain-swap-transaction-settings']: ControlElement;
     }
   }
 };
 
 @customModule
-@customElements('xchain-transaction-settings')
-export class TransactionSettings extends Module {
+@customElements('xchain-swap-transaction-settings')
+export class XchainSwapTransactionSettings extends Module {
   private transactionModal: Modal;
-  private transactionLayout: TransactionSettingsLayout;
+  private transactionLayout: XchainSwapTransactionSettingsLayout;
   private mainContent: Panel;
   private state: State;
 
@@ -50,7 +50,7 @@ export class TransactionSettings extends Module {
     this.i18n.init({...transactionsJson});
     this.classList.add(styleClass);
     super.init();
-    this.transactionLayout = new TransactionSettingsLayout(this.state);
+    this.transactionLayout = new XchainSwapTransactionSettingsLayout(this.state);
     this.mainContent.appendChild(this.transactionLayout);
     this.transactionLayout.showCrossChain = this.showCrossChain;
     this.transactionModal.title = this.i18n.get('$transaction_settings');

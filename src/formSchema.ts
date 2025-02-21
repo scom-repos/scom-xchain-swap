@@ -204,7 +204,7 @@ export function getBuilderSchema() {
                 //     title: '$current_url_hash',
                 //     type: 'string'
                 // },
-                // enableUrlParams: {
+                // urlParamsEnabled: {
                 //     title: '$enable_url_params',
                 //     type: 'boolean'
                 // },
@@ -266,7 +266,7 @@ export function getBuilderSchema() {
                         // },
                         // {
                         //     type: 'Control',
-                        //     scope: '#/properties/enableUrlParams'
+                        //     scope: '#/properties/urlParamsEnabled'
                         // },
                         {
                             type: 'Control',
