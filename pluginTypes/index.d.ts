@@ -148,15 +148,10 @@ declare module "@scom/scom-xchain-swap/store/data/core.ts" {
     }
     export const VaultGroupList: VaultGroupConstant[];
 }
-/// <amd-module name="@scom/scom-xchain-swap/store/data/dummy.ts" />
-declare module "@scom/scom-xchain-swap/store/data/dummy.ts" {
-    export const dummyAddressList: string[];
-}
 /// <amd-module name="@scom/scom-xchain-swap/store/data/index.ts" />
 declare module "@scom/scom-xchain-swap/store/data/index.ts" {
     export { DefaultERC20Tokens, ChainNativeTokenByChainId, DefaultTokens, ToUSDPriceFeedAddressesMap, tokenPriceAMMReference, getTokenIconPath, getOpenSwapToken, } from "@scom/scom-xchain-swap/store/data/tokens/index.ts";
     export * from "@scom/scom-xchain-swap/store/data/core.ts";
-    export { dummyAddressList, } from "@scom/scom-xchain-swap/store/data/dummy.ts";
 }
 /// <amd-module name="@scom/scom-xchain-swap/global/helper.ts" />
 declare module "@scom/scom-xchain-swap/global/helper.ts" {
@@ -293,7 +288,7 @@ declare module "@scom/scom-xchain-swap/data.json.ts" {
 declare module "@scom/scom-xchain-swap/store/utils.ts" {
     import { BigNumber, ERC20ApprovalModel, IERC20ApprovalEventOptions } from '@ijstech/eth-wallet';
     import { IExtendedNetwork, TokenMapType } from "@scom/scom-xchain-swap/global/index.ts";
-    import { VaultConstant, VaultGroupConstant, VaultType, TokenConstant } from "@scom/scom-xchain-swap/store/data/core.ts";
+    import { VaultConstant, VaultType, TokenConstant } from "@scom/scom-xchain-swap/store/data/core.ts";
     import { INetworkConfig } from '@scom/scom-network-picker';
     import { ITokenObject } from '@scom/scom-token-list';
     export interface IWalletConnectMetadata {
@@ -329,24 +324,6 @@ declare module "@scom/scom-xchain-swap/store/utils.ts" {
     export function forEachNumberIndex<T>(list: {
         [index: number]: T;
     }, callbackFn: (item: T, index: number) => void): void;
-    export function forEachStringIndexAwait<T>(list: {
-        [index: string]: T;
-    }, callbackFn: (item: T, index: string) => Promise<void>): Promise<void>;
-    export function forEachStringIndex<T>(list: {
-        [index: string]: T;
-    }, callbackFn: (item: T, index: string) => void): void;
-    export function filterNumberIndexedList<T>(list: {
-        [index: number]: T;
-    }, filterFn: (item: T, index: number) => boolean): {
-        [index: number]: T;
-    };
-    export function filterVaultInsideGroup(vgs: VaultGroupConstant[], filterFn: (vault: VaultConstant, chainId: number) => boolean): {
-        assetName: string;
-        vaultType: VaultType;
-        vaults: {
-            [index: number]: VaultConstant;
-        };
-    }[];
     export interface VaultGroupStore {
         assetName: string;
         vaultType: VaultType;
@@ -397,54 +374,6 @@ declare module "@scom/scom-xchain-swap/store/utils.ts" {
         RequestAmend = 5,
         Expired = 6
     }
-    export interface VaultOrderItem {
-        assetName: string;
-        fromVaultAddress: string;
-        toVaultAddress: string;
-        orderId: number;
-        expire: BigNumber;
-        fromNetwork: IExtendedNetwork;
-        toNetwork: IExtendedNetwork;
-        price: string;
-        protocolFee: BigNumber;
-        fromAmount: string;
-        fromToken: TokenConstant;
-        toToken: TokenConstant;
-        toAmount: string;
-        minOutAmount: string;
-        sourceVaultToken: TokenConstant;
-        sourceVaultInAmount: string;
-        statusCode: VaultOrderStatus;
-        status: string;
-        sender: string;
-    }
-    interface Logo {
-        default: string;
-        mobile: string;
-        footer: string;
-    }
-    interface FooterPageInfo {
-        caption: string;
-        link: string;
-    }
-    interface SocialMediaInfo {
-        img: string;
-        link: string;
-    }
-    interface TokenInfo {
-        symbol: string;
-        img: string;
-    }
-    export interface ProjectInfo {
-        logo: Logo;
-        versionText: string;
-    }
-    export interface IParams {
-        projectInfo: ProjectInfo;
-        footerPagesInfo: FooterPageInfo[];
-        socialMediaInfo: SocialMediaInfo[];
-        tokenInfo: TokenInfo;
-    }
     export type ProxyAddresses = {
         [key: number]: string;
     };
@@ -488,10 +417,6 @@ declare module "@scom/scom-xchain-swap/store/utils.ts" {
         private initData;
         setApprovalModelAction(options: IERC20ApprovalEventOptions): Promise<import("@ijstech/eth-wallet").IERC20ApprovalAction>;
     }
-    export function isContractVaultOrderStatus(n: number): n is ContractVaultOrderStatus;
-    export function isVaultOrderStatus(n: number): n is VaultOrderStatus;
-    export function castToVaultOrderStatus(n: number): ContractVaultOrderStatus;
-    export function determineOrderStatus(expire: number | BigNumber, fromChainStatus: ContractVaultOrderStatus, toChainStatus: ContractVaultOrderStatus): VaultOrderStatus;
     interface NetworkConditions {
         isDisabled?: boolean;
         isTestnet?: boolean;
@@ -504,7 +429,6 @@ declare module "@scom/scom-xchain-swap/store/utils.ts" {
     export function isWalletConnected(): boolean;
     export function switchNetwork(chainId: number): Promise<void>;
     export const truncateAddress: (address: string) => string;
-    export function getChainId(): number;
     export function getAddresses(chainId: number): import("@scom/scom-xchain-swap/store/data/core.ts").ContractSet;
     export const getChainNativeToken: (chainId: number) => ITokenObject;
     export const getGovToken: (chainId: number) => ITokenObject;
@@ -714,7 +638,6 @@ declare module "@scom/scom-xchain-swap/crosschain-utils/API.ts" {
         error: Record<string, string> | null;
     }>;
     const getVaultAssetBalance: (state: State, chainId: number, vaultAddress: string) => Promise<BigNumber>;
-    const getChainNativeToken: () => ITokenObject;
     interface SwapData {
         fromAmount: BigNumber;
         toAmount: BigNumber;
@@ -759,11 +682,8 @@ declare module "@scom/scom-xchain-swap/crosschain-utils/API.ts" {
         inAmount: BigNumber;
     }
     function findVaultGroupByToken(state: State, chainId: number, tokenAddress: string): Promise<VaultGroupStore>;
-    function findToVault(state: State, fromChainId: number, tokenAddress: string, toChainId: number): Promise<VaultStore>;
-    function findAllAsset(state: State, fromChainId: number): Promise<VaultConstant[]>;
     function getVaultGroups(state: State, isUpdate?: boolean): Promise<VaultGroupStore[]>;
-    function getVaultGroupsUpdateOrders(state: State, isUpdate?: boolean): Promise<VaultGroupStore[]>;
-    export { isSupportedCrossChain, getFeeAmounts, getVaultGroups, getVaultGroupsUpdateOrders, VaultTokenMap, getVaultTokenMap, getBond, initCrossChainWallet, CreateOrderParams, CreateBridgeVaultOrderParams, createBridgeVaultOrder, GetAvailableRouteOptionsParams, Route, getRoute, ICrossChainRouteResult, getVaultAssetBalance, findAllAsset, findToVault, findVaultGroupByToken, SwapData, getChainNativeToken, NewOrderParams, };
+    export { isSupportedCrossChain, getFeeAmounts, getVaultGroups, VaultTokenMap, getVaultTokenMap, getBond, initCrossChainWallet, CreateOrderParams, CreateBridgeVaultOrderParams, createBridgeVaultOrder, GetAvailableRouteOptionsParams, Route, getRoute, ICrossChainRouteResult, getVaultAssetBalance, findVaultGroupByToken, SwapData, NewOrderParams, };
 }
 /// <amd-module name="@scom/scom-xchain-swap/crosschain-utils/index.ts" />
 declare module "@scom/scom-xchain-swap/crosschain-utils/index.ts" {
@@ -1140,17 +1060,17 @@ declare module "@scom/scom-xchain-swap/price-info/index.tsx" {
     global {
         namespace JSX {
             interface IntrinsicElements {
-                ['price-info']: ControlElement;
+                ['xchain-swap-price-info']: ControlElement;
             }
         }
     }
-    export class PriceInfo extends Module {
+    export class XchainSwapPriceInfo extends Module {
         private priceContent;
         private _items;
         onTogglePrice: any;
         constructor(parent?: Container, options?: any);
-        get Items(): any[];
-        set Items(value: any[]);
+        get items(): any[];
+        set items(value: any[]);
         renderItems: () => Promise<void>;
         onRenderToggleBtn: (parent: Control) => Image;
         renderIconTooltip: (parent: Control, item: any) => Promise<Icon>;
@@ -1171,11 +1091,11 @@ declare module "@scom/scom-xchain-swap/expert-mode-settings/index.tsx" {
     global {
         namespace JSX {
             interface IntrinsicElements {
-                ['xchain-expert-mode-settings']: ControlElement;
+                ['xchain-swap-expert-mode-settings']: ControlElement;
             }
         }
     }
-    export class ExpertModeSettings extends Module {
+    export class XchainSwapExpertModeSettings extends Module {
         private expertModal;
         private $eventBus;
         private state;
@@ -1199,11 +1119,11 @@ declare module "@scom/scom-xchain-swap/transaction-settings-layout/index.tsx" {
     global {
         namespace JSX {
             interface IntrinsicElements {
-                ['xchain-transaction-settings-layout']: ControlElement;
+                ['xchain-swap-transaction-settings-layout']: ControlElement;
             }
         }
     }
-    export class TransactionSettingsLayout extends Module {
+    export class XchainSwapTransactionSettingsLayout extends Module {
         private slippageGroup;
         private slippageInput;
         private warningIcon;
@@ -1253,11 +1173,11 @@ declare module "@scom/scom-xchain-swap/transaction-settings/index.tsx" {
     global {
         namespace JSX {
             interface IntrinsicElements {
-                ['xchain-transaction-settings']: ControlElement;
+                ['xchain-swap-transaction-settings']: ControlElement;
             }
         }
     }
-    export class TransactionSettings extends Module {
+    export class XchainSwapTransactionSettings extends Module {
         private transactionModal;
         private transactionLayout;
         private mainContent;

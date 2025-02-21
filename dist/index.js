@@ -294,8 +294,8 @@ define("@scom/scom-xchain-swap/store/data/core.ts", ["require", "exports"], func
                     vaultRegistryAddress: "0x6991c11980C2F2096f6a9017c7032F4394aFdf94",
                     vaultAddress: "0x6E10d62dd0FD6e7A9F4Dd027F5BCf107663cb73f",
                     softCap: 30000,
-                    baseFee: "0",
-                    protocolFee: "0.002",
+                    baseFee: "1",
+                    protocolFee: "0.001",
                     transactionFee: "0.001",
                     imbalanceFee: "0.001",
                 },
@@ -310,6 +310,44 @@ define("@scom/scom-xchain-swap/store/data/core.ts", ["require", "exports"], func
                     vaultRegistryAddress: "0x1a90D8aEAd171C58adf3De15b814d51A65829D60",
                     vaultAddress: "0xB788b29C563D464486C52DA476098e880C0c1fA8",
                     softCap: 30000,
+                    baseFee: "1",
+                    protocolFee: "0.001",
+                    transactionFee: "0.001",
+                    imbalanceFee: "0.001",
+                },
+            }
+        },
+        {
+            assetName: "ABC",
+            vaultType: VaultType.Project,
+            vaults: {
+                97: {
+                    chainId: 97,
+                    assetToken: {
+                        name: "ABC",
+                        symbol: "ABC",
+                        address: "0xE36d2875B3C02ACFeFB8F20F2FeFCD727222B73F",
+                        decimals: 18,
+                    },
+                    vaultRegistryAddress: "0x010a273131428538005602555C24fb58737A71A4",
+                    vaultAddress: "0x358664aa6c270C250e1664482655142ea5a2Cda0",
+                    softCap: 30000,
+                    baseFee: "0",
+                    protocolFee: "0.002",
+                    transactionFee: "0.001",
+                    imbalanceFee: "0.001",
+                },
+                43113: {
+                    chainId: 43113,
+                    assetToken: {
+                        name: "ABC",
+                        symbol: "ABC",
+                        address: "0x34eCa87583F451eaA4672ce3E1F921C7fD3F5D03",
+                        decimals: 18,
+                    },
+                    vaultRegistryAddress: "0x06f66a062cc94feab258f4cbdfd7020d9e7ebe10",
+                    vaultAddress: "0xb985cc325aa7ec630d52065b6620f1bc336c85bf",
+                    softCap: 30000,
                     baseFee: "0",
                     protocolFee: "0.002",
                     transactionFee: "0.001",
@@ -319,28 +357,10 @@ define("@scom/scom-xchain-swap/store/data/core.ts", ["require", "exports"], func
         }
     ];
 });
-define("@scom/scom-xchain-swap/store/data/dummy.ts", ["require", "exports"], function (require, exports) {
+define("@scom/scom-xchain-swap/store/data/index.ts", ["require", "exports", "@scom/scom-xchain-swap/store/data/tokens/index.ts", "@scom/scom-xchain-swap/store/data/core.ts"], function (require, exports, index_3, core_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.dummyAddressList = void 0;
-    ///<amd-module name='@scom/scom-xchain-swap/store/data/dummy.ts'/> 
-    exports.dummyAddressList = [
-        "0xFa8e00000001234567899876543210000000Fa8e",
-        "0xFa8e11111111234567899876543211111111Fa8e",
-        "0xFa8e22222221234567899876543212222222Fa8e",
-        "0xFa8e33333331234567899876543213333333Fa8e",
-        "0xFa8e44444441234567899876543214444444Fa8e",
-        "0xFa8e55555551234567899876543215555555Fa8e",
-        "0xFa8e66666661234567899876543216666666Fa8e",
-        "0xFa8e77777771234567899876543217777777Fa8e",
-        "0xFa8e88888881234567899876543218888888Fa8e",
-        "0xFa8e99999991234567899876543219999999Fa8e",
-    ];
-});
-define("@scom/scom-xchain-swap/store/data/index.ts", ["require", "exports", "@scom/scom-xchain-swap/store/data/tokens/index.ts", "@scom/scom-xchain-swap/store/data/core.ts", "@scom/scom-xchain-swap/store/data/dummy.ts"], function (require, exports, index_3, core_1, dummy_1) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.dummyAddressList = exports.getOpenSwapToken = exports.getTokenIconPath = exports.tokenPriceAMMReference = exports.ToUSDPriceFeedAddressesMap = exports.DefaultTokens = exports.ChainNativeTokenByChainId = exports.DefaultERC20Tokens = void 0;
+    exports.getOpenSwapToken = exports.getTokenIconPath = exports.tokenPriceAMMReference = exports.ToUSDPriceFeedAddressesMap = exports.DefaultTokens = exports.ChainNativeTokenByChainId = exports.DefaultERC20Tokens = void 0;
     Object.defineProperty(exports, "DefaultERC20Tokens", { enumerable: true, get: function () { return index_3.DefaultERC20Tokens; } });
     Object.defineProperty(exports, "ChainNativeTokenByChainId", { enumerable: true, get: function () { return index_3.ChainNativeTokenByChainId; } });
     Object.defineProperty(exports, "DefaultTokens", { enumerable: true, get: function () { return index_3.DefaultTokens; } });
@@ -349,7 +369,6 @@ define("@scom/scom-xchain-swap/store/data/index.ts", ["require", "exports", "@sc
     Object.defineProperty(exports, "getTokenIconPath", { enumerable: true, get: function () { return index_3.getTokenIconPath; } });
     Object.defineProperty(exports, "getOpenSwapToken", { enumerable: true, get: function () { return index_3.getOpenSwapToken; } });
     __exportStar(core_1, exports);
-    Object.defineProperty(exports, "dummyAddressList", { enumerable: true, get: function () { return dummy_1.dummyAddressList; } });
 });
 define("@scom/scom-xchain-swap/global/helper.ts", ["require", "exports", "@ijstech/eth-wallet", "@ijstech/components"], function (require, exports, eth_wallet_1, components_1) {
     "use strict";
@@ -601,7 +620,7 @@ define("@scom/scom-xchain-swap/data.json.ts", ["require", "exports"], function (
 define("@scom/scom-xchain-swap/store/utils.ts", ["require", "exports", "@ijstech/components", "@ijstech/eth-wallet", "@scom/scom-xchain-swap/store/data/index.ts", "@scom/scom-xchain-swap/store/data/core.ts", "@scom/scom-network-list", "@scom/scom-xchain-swap/data.json.ts"], function (require, exports, components_2, eth_wallet_3, index_4, core_2, scom_network_list_1, data_json_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getGovToken = exports.getChainNativeToken = exports.getAddresses = exports.getChainId = exports.truncateAddress = exports.switchNetwork = exports.isWalletConnected = exports.isMetaMask = exports.getWalletProvider = exports.getTokensDataList = exports.determineOrderStatus = exports.castToVaultOrderStatus = exports.isVaultOrderStatus = exports.isContractVaultOrderStatus = exports.State = exports.VaultOrderStatus = exports.ContractVaultOrderStatus = exports.filterVaultInsideGroup = exports.filterNumberIndexedList = exports.forEachStringIndex = exports.forEachStringIndexAwait = exports.forEachNumberIndex = exports.forEachNumberIndexAwait = exports.getNetworksByType = exports.getNetworkType = exports.NetworkType = exports.WalletPlugin = void 0;
+    exports.getGovToken = exports.getChainNativeToken = exports.getAddresses = exports.truncateAddress = exports.switchNetwork = exports.isWalletConnected = exports.isMetaMask = exports.getWalletProvider = exports.getTokensDataList = exports.State = exports.VaultOrderStatus = exports.ContractVaultOrderStatus = exports.forEachNumberIndex = exports.forEachNumberIndexAwait = exports.getNetworksByType = exports.getNetworkType = exports.NetworkType = exports.WalletPlugin = void 0;
     var WalletPlugin;
     (function (WalletPlugin) {
         WalletPlugin["MetaMask"] = "metamask";
@@ -655,45 +674,6 @@ define("@scom/scom-xchain-swap/store/utils.ts", ["require", "exports", "@ijstech
         }
     }
     exports.forEachNumberIndex = forEachNumberIndex;
-    async function forEachStringIndexAwait(list, callbackFn) {
-        for (const index in list) {
-            if (Object.prototype.hasOwnProperty.call(list, index)) {
-                await callbackFn(list[index], index);
-            }
-        }
-    }
-    exports.forEachStringIndexAwait = forEachStringIndexAwait;
-    function forEachStringIndex(list, callbackFn) {
-        for (const index in list) {
-            if (Object.prototype.hasOwnProperty.call(list, index)) {
-                callbackFn(list[index], index);
-            }
-        }
-    }
-    exports.forEachStringIndex = forEachStringIndex;
-    function filterNumberIndexedList(list, filterFn) {
-        let out = {};
-        for (const index in list) {
-            let indexBN = new eth_wallet_3.BigNumber(index);
-            let indexN = indexBN.toNumber();
-            if (Object.prototype.hasOwnProperty.call(list, index)
-                && indexBN.isInteger()
-                && filterFn(list[indexN], indexN))
-                out[indexN] = list[indexN];
-        }
-        return out;
-    }
-    exports.filterNumberIndexedList = filterNumberIndexedList;
-    function filterVaultInsideGroup(vgs, filterFn) {
-        return vgs.map(group => {
-            return {
-                assetName: group.assetName,
-                vaultType: group.vaultType,
-                vaults: filterNumberIndexedList(group.vaults, filterFn),
-            };
-        });
-    }
-    exports.filterVaultInsideGroup = filterVaultInsideGroup;
     var ContractVaultOrderStatus;
     (function (ContractVaultOrderStatus) {
         //copied from contract interface IOSWAP_BridgeVault, 
@@ -876,82 +856,6 @@ define("@scom/scom-xchain-swap/store/utils.ts", ["require", "exports", "@ijstech
         }
     }
     exports.State = State;
-    function isContractVaultOrderStatus(n) {
-        return (n <= 6 && n >= 0);
-    }
-    exports.isContractVaultOrderStatus = isContractVaultOrderStatus;
-    function isVaultOrderStatus(n) {
-        return (n <= 6 && n >= 0);
-    }
-    exports.isVaultOrderStatus = isVaultOrderStatus;
-    function castToVaultOrderStatus(n) {
-        switch (n) {
-            case 0:
-                return ContractVaultOrderStatus.NotSpecified;
-            case 1:
-                return ContractVaultOrderStatus.Pending;
-            case 2:
-                return ContractVaultOrderStatus.Executed;
-            case 3:
-                return ContractVaultOrderStatus.RequestCancel;
-            case 4:
-                return ContractVaultOrderStatus.RefundApproved;
-            case 5:
-                return ContractVaultOrderStatus.Cancelled;
-            case 6:
-                return ContractVaultOrderStatus.RequestAmend;
-        }
-        return null;
-    }
-    exports.castToVaultOrderStatus = castToVaultOrderStatus;
-    function determineOrderStatus(expire, fromChainStatus, toChainStatus) {
-        switch (toChainStatus) {
-            case ContractVaultOrderStatus.Executed:
-                return VaultOrderStatus.Executed;
-            case ContractVaultOrderStatus.RequestCancel:
-                if (fromChainStatus == ContractVaultOrderStatus.RefundApproved)
-                    return VaultOrderStatus.RefundApproved;
-                if (fromChainStatus == ContractVaultOrderStatus.Cancelled)
-                    return VaultOrderStatus.Cancelled;
-                return VaultOrderStatus.RequestCancel;
-            case ContractVaultOrderStatus.RefundApproved:
-                return VaultOrderStatus.RefundApproved;
-            case ContractVaultOrderStatus.Cancelled:
-                return VaultOrderStatus.Cancelled;
-            case ContractVaultOrderStatus.RequestAmend:
-                return VaultOrderStatus.RequestAmend;
-            case ContractVaultOrderStatus.Pending:
-                if (fromChainStatus == ContractVaultOrderStatus.Pending && new eth_wallet_3.BigNumber(new Date().getTime()).shiftedBy(-3).gte(expire)) {
-                    return VaultOrderStatus.Expired;
-                }
-                else {
-                    return VaultOrderStatus.Pending;
-                }
-            case ContractVaultOrderStatus.NotSpecified: {
-                switch (fromChainStatus) {
-                    case ContractVaultOrderStatus.Executed:
-                        return VaultOrderStatus.Executed;
-                    case ContractVaultOrderStatus.RequestCancel:
-                        return VaultOrderStatus.RequestCancel;
-                    case ContractVaultOrderStatus.RefundApproved:
-                        return VaultOrderStatus.RefundApproved;
-                    case ContractVaultOrderStatus.Cancelled:
-                        return VaultOrderStatus.Cancelled;
-                    case ContractVaultOrderStatus.RequestAmend:
-                        return VaultOrderStatus.RequestAmend;
-                    case ContractVaultOrderStatus.NotSpecified:
-                    case ContractVaultOrderStatus.Pending:
-                        if (new eth_wallet_3.BigNumber(new Date().getTime()).shiftedBy(-3).gte(expire)) {
-                            return VaultOrderStatus.Expired;
-                        }
-                        else {
-                            return VaultOrderStatus.Pending;
-                        }
-                }
-            }
-        }
-    }
-    exports.determineOrderStatus = determineOrderStatus;
     function castToVaultStore(vc) {
         return {
             ...vc,
@@ -979,7 +883,7 @@ define("@scom/scom-xchain-swap/store/utils.ts", ["require", "exports", "@ijstech
             switch (typeof filter[f]) {
                 case 'boolean':
                     if (filter[f] === false) {
-                        return item[f] === undefined || item[f] === null;
+                        return !item[f];
                     }
                 // also case for filter[f] === true 
                 case 'string':
@@ -1042,11 +946,6 @@ define("@scom/scom-xchain-swap/store/utils.ts", ["require", "exports", "@ijstech
         return address.substr(0, 6) + '...' + address.substr(-4);
     };
     exports.truncateAddress = truncateAddress;
-    function getChainId() {
-        // return isWalletConnected() ? Wallet.getClientInstance().chainId  : getDefaultChainId();
-        return eth_wallet_3.Wallet.getClientInstance().chainId;
-    }
-    exports.getChainId = getChainId;
     function getAddresses(chainId) {
         return index_4.CoreContractStore[chainId];
     }
@@ -1141,10 +1040,10 @@ define("@scom/scom-xchain-swap/crosschain-utils/crosschain-utils.types.ts", ["re
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
 });
-define("@scom/scom-xchain-swap/crosschain-utils/API.ts", ["require", "exports", "@scom/scom-xchain-swap/store/index.ts", "@ijstech/eth-wallet", "@scom/oswap-cross-chain-bridge-contract", "@scom/oswap-openswap-contract", "@scom/scom-multicall", "@ijstech/eth-contract"], function (require, exports, index_7, eth_wallet_4, oswap_cross_chain_bridge_contract_1, oswap_openswap_contract_1, scom_multicall_1) {
+define("@scom/scom-xchain-swap/crosschain-utils/API.ts", ["require", "exports", "@scom/scom-xchain-swap/store/index.ts", "@ijstech/eth-wallet", "@scom/oswap-cross-chain-bridge-contract", "@scom/scom-multicall", "@ijstech/eth-contract"], function (require, exports, index_7, eth_wallet_4, oswap_cross_chain_bridge_contract_1, scom_multicall_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getChainNativeToken = exports.findVaultGroupByToken = exports.findToVault = exports.findAllAsset = exports.getVaultAssetBalance = exports.getRoute = exports.createBridgeVaultOrder = exports.initCrossChainWallet = exports.getBond = exports.getVaultTokenMap = exports.getVaultGroupsUpdateOrders = exports.getVaultGroups = exports.getFeeAmounts = exports.isSupportedCrossChain = void 0;
+    exports.findVaultGroupByToken = exports.getVaultAssetBalance = exports.getRoute = exports.createBridgeVaultOrder = exports.initCrossChainWallet = exports.getBond = exports.getVaultTokenMap = exports.getVaultGroups = exports.getFeeAmounts = exports.isSupportedCrossChain = void 0;
     const initCrossChainWallet = (state, chainId) => {
         const wallet = eth_wallet_4.Wallet.getClientInstance();
         const networkInfo = state.getNetworkInfo(chainId);
@@ -1212,17 +1111,6 @@ define("@scom/scom-xchain-swap/crosschain-utils/API.ts", ["require", "exports", 
         }
     }
     exports.createBridgeVaultOrder = createBridgeVaultOrder;
-    const checkIsApproveButtonShown = async (tokenIn, fromInput, address) => {
-        if (!(0, index_7.isWalletConnected)())
-            return false;
-        const wallet = eth_wallet_4.Wallet.getClientInstance();
-        let erc20 = new oswap_openswap_contract_1.Contracts.ERC20(wallet, tokenIn.address);
-        let allowance = await erc20.allowance({
-            owner: wallet.address,
-            spender: address
-        });
-        return fromInput.gt(eth_wallet_4.Utils.fromDecimals(allowance, tokenIn.decimals));
-    };
     // Return the current vault asset balance by given chainId and address
     const getVaultAssetBalance = async (state, chainId, vaultAddress) => {
         let targetChainWallet = initCrossChainWallet(state, chainId);
@@ -1231,10 +1119,6 @@ define("@scom/scom-xchain-swap/crosschain-utils/API.ts", ["require", "exports", 
         return (await asset.balanceOf(vault.address));
     };
     exports.getVaultAssetBalance = getVaultAssetBalance;
-    const getChainNativeToken = () => {
-        return index_7.ChainNativeTokenByChainId[(0, index_7.getChainId)()];
-    };
-    exports.getChainNativeToken = getChainNativeToken;
     // CrossChain
     function getFeeAmounts(vault, amountIn) {
         let deci = vault.assetToken.decimals;
@@ -1280,25 +1164,12 @@ define("@scom/scom-xchain-swap/crosschain-utils/API.ts", ["require", "exports", 
             return undefined;
         }
     }
-    async function findToVault(state, fromChainId, tokenAddress, toChainId) {
-        let group = await findVaultGroupByToken(state, fromChainId, tokenAddress);
-        if (!group || !group.vaults)
-            throw new Error(`No such token ${tokenAddress} recorded in chain ${fromChainId}`);
-        return findVault(group, toChainId);
-    }
-    exports.findToVault = findToVault;
-    async function findAllAsset(state, fromChainId) {
-        let out = [];
-        let vgs = await getVaultGroups(state);
-        vgs.forEach(group => {
-            const vaults = findVault(group, fromChainId);
-            if (vaults)
-                out.push(vaults);
-        });
-        return out;
-    }
-    exports.findAllAsset = findAllAsset;
     async function getVaultGroups(state, isUpdate) {
+        const wallet = eth_wallet_4.Wallet.getClientInstance();
+        if (!wallet.address) {
+            // for noto fan when wallet is not connected
+            return getVaultGroupsWithoutWallet(state, isUpdate);
+        }
         let walletChainId = eth_wallet_4.Wallet.getClientInstance().chainId;
         let networks = (0, index_7.getNetworksByType)(walletChainId);
         let vaultGroupsStore = state.getVaultGroups();
@@ -1371,243 +1242,31 @@ define("@scom/scom-xchain-swap/crosschain-utils/API.ts", ["require", "exports", 
         return vaultGroupsStore;
     }
     exports.getVaultGroups = getVaultGroups;
-    async function getVaultGroupsUpdateOrders(state, isUpdate) {
-        console.log("orders start");
-        console.time("orders");
-        let wallet = eth_wallet_4.Wallet.getClientInstance();
-        let walletAddress = wallet.address;
-        let walletChainId = wallet.chainId;
+    // Support noto fan if wallet is not connected
+    async function getVaultGroupsWithoutWallet(state, isUpdate) {
+        let walletChainId = eth_wallet_4.Wallet.getClientInstance().chainId;
         let networks = (0, index_7.getNetworksByType)(walletChainId);
-        let vaultGroupsStore = await getVaultGroups(state, isUpdate);
+        let vaultGroupsStore = state.getVaultGroups();
         if (!isUpdate)
             return vaultGroupsStore;
-        let chainTask = {};
-        //MARK: ordersLength
-        vaultGroupsStore.forEach(group => {
-            (0, index_7.forEachNumberIndex)(group.vaults, (vault, chainId) => {
-                if (networks.every(n => n !== chainId))
-                    return;
-                if (!chainTask[chainId]) {
-                    chainTask[chainId] = {
-                        assetNames: [],
-                        wallet: initCrossChainWallet(state, Number(chainId)),
-                        calls: [],
-                        resPromise: null
-                    };
-                }
-                let vaultContract = new oswap_cross_chain_bridge_contract_1.Contracts.OSWAP_BridgeVault(chainTask[chainId].wallet, vault.vaultAddress);
-                chainTask[chainId].assetNames.push(group.assetName);
-                chainTask[chainId].calls.push({
-                    to: vault.vaultAddress,
-                    contract: vaultContract,
-                    methodName: "ordersLength",
-                    params: []
-                });
-            });
-        });
-        let tasks = [];
-        for (const chainId in chainTask) {
-            if (Object.prototype.hasOwnProperty.call(chainTask, chainId)
-                && new eth_wallet_4.BigNumber(chainId).isInteger()) {
-                chainTask[chainId].resPromise = chainTask[chainId].wallet.doMulticall(chainTask[chainId].calls);
-                tasks.push(chainTask[chainId].resPromise);
-            }
-        }
-        await Promise.all(tasks);
-        await (0, index_7.forEachNumberIndexAwait)(chainTask, async (x, chainId) => {
-            try {
-                let res = await x.resPromise;
-                if (!res)
-                    throw new Error(`doMulticall result is empty. trying to call ordersLength() ${x.calls.reduce((prev, curr) => { return `${prev}, ${curr.to}`; }, "")}`);
-                vaultGroupsStore.forEach((group, gIndex) => {
-                    let callIndex = x.assetNames.findIndex(asset => asset === group.assetName);
-                    if (callIndex < 0)
-                        return;
-                    vaultGroupsStore[gIndex].vaults[chainId].ordersLength = res[callIndex];
-                });
-            }
-            catch (error) {
-                console.log(`Error on getVaultGroups chainId ${chainId}.`, error);
-            }
-        });
-        //MARK: orders
-        const size = 100;
-        for (const group of vaultGroupsStore) {
+        for (let i = 0; i < vaultGroupsStore.length; i++) {
+            const group = vaultGroupsStore[i];
             await (0, index_7.forEachNumberIndexAwait)(group.vaults, async (vault, chainId) => {
                 if (networks.every(n => n !== chainId))
                     return;
-                let rawOrders = await fetchOrders(chainTask[chainId].wallet, vault.vaultAddress, vault.ordersLength, size);
-                let rawOrders2 = rawOrders.map((o, i) => { return { ...o, id: i }; });
-                let filteredRawOrder = rawOrders2.filter(o => o.to === walletAddress);
-                let orders = filteredRawOrder.map((o, i) => {
-                    let toChain = o.peerChain.toNumber();
-                    return {
-                        id: o.id,
-                        status: index_7.VaultOrderStatus.Pending,
-                        expire: o.expire,
-                        fromOwner: o.to,
-                        fromChain: chainId,
-                        fromToken: vault.assetToken,
-                        fromAmount: new eth_wallet_4.BigNumber(o.inAmount),
-                        fromStatus: index_7.ContractVaultOrderStatus.NotSpecified,
-                        toOwner: o.to,
-                        toChain,
-                        toToken: group.vaults[toChain].assetToken,
-                        toAmount: new eth_wallet_4.BigNumber(o.minOutAmount),
-                        toAmountMin: new eth_wallet_4.BigNumber(o.minOutAmount),
-                        toStatus: index_7.ContractVaultOrderStatus.NotSpecified,
-                        protocolFee: vault.protocolFee
-                    };
-                });
-                vault.userOrders = orders;
+                const wallet = initCrossChainWallet(state, chainId);
+                const vaultContract = new oswap_cross_chain_bridge_contract_1.Contracts.OSWAP_BridgeVault(wallet, vault.vaultAddress);
+                vaultGroupsStore[i].vaults[chainId].tokenBalance = await vaultContract.lpAssetBalance();
+                vaultGroupsStore[i].vaults[chainId].imbalance = await vaultContract.imbalance();
+                vaultGroupsStore[i].vaults[chainId].ordersLength = (await vaultContract.ordersLength()).toNumber();
+                if (wallet.address) {
+                    const tokenContract = new oswap_cross_chain_bridge_contract_1.Contracts.ERC20(wallet, vault.assetToken.address);
+                    vaultGroupsStore[i].vaults[chainId].userTokenAmount = await tokenContract.balanceOf(wallet.address);
+                }
             });
         }
-        console.log("fetchOrders() end", vaultGroupsStore);
-        //MARK: orderStatus
-        vaultGroupsStore = await fetchOrdersStatus(state, vaultGroupsStore).catch(x => {
-            console.log("fetchOrdersStatus failed", x);
-            return [];
-        });
-        console.log("getVaultGroupsUpdateOrders() end", vaultGroupsStore);
-        console.timeEnd("orders");
         state.setVaultGroups(vaultGroupsStore);
         return vaultGroupsStore;
-    }
-    exports.getVaultGroupsUpdateOrders = getVaultGroupsUpdateOrders;
-    async function fetchOrders(wallet, vaultAddress, ordersLength, batchSize) {
-        let orders = [];
-        let vaultContract = new oswap_cross_chain_bridge_contract_1.Contracts.OSWAP_BridgeVault(wallet, vaultAddress);
-        for (let i = 0; i < ordersLength; i += batchSize) {
-            let orderBatch = await vaultContract.getOrders({ start: i, length: batchSize });
-            orders = orders.concat(orderBatch);
-        }
-        console.log("fetchOrders", orders);
-        return orders;
-    }
-    async function fetchOrdersStatus(state, vaultGroupsStore) {
-        let walletAddress = eth_wallet_4.Wallet.getClientInstance().address;
-        let chainTask = new Map();
-        //add calls
-        for (let i = 0; i < vaultGroupsStore.length; i++) {
-            let contrs = new Map();
-            (0, index_7.forEachNumberIndex)(vaultGroupsStore[i].vaults, (vault, chainId) => {
-                if (!chainTask.has(chainId)) {
-                    chainTask.set(chainId, {
-                        wallet: initCrossChainWallet(state, chainId),
-                        callsTo: [],
-                        calls: [],
-                        callsToIndex: [],
-                        prom: null,
-                        res: []
-                    });
-                }
-                contrs.set(chainId, new oswap_cross_chain_bridge_contract_1.Contracts.OSWAP_BridgeVault(chainTask.get(chainId).wallet, vault.vaultAddress));
-            });
-            (0, index_7.forEachNumberIndex)(vaultGroupsStore[i].vaults, (vault, chainId) => {
-                for (let j = 0; j < vault.userOrders.length; j++) {
-                    const t = chainTask.get(chainId);
-                    t.calls.push({
-                        to: vault.vaultAddress,
-                        contract: contrs.get(chainId),
-                        methodName: "orderStatus",
-                        params: [vault.userOrders[j].id]
-                    });
-                    const t2 = chainTask.get(vault.userOrders[j].toChain);
-                    const orderHash = t2.wallet.soliditySha3({ t: 'address', v: walletAddress }, { t: 'uint256', v: vault.userOrders[j].toChain }, { t: 'address', v: vaultGroupsStore[i].vaults[vault.userOrders[j].toChain].vaultAddress }, { t: 'uint256', v: chainId }, { t: 'uint256', v: vault.userOrders[j].id });
-                    t2.callsToIndex.push({ fromChain: chainId, vgIndex: i, orderIndex: j });
-                    t2.callsTo.push({
-                        to: vaultGroupsStore[i].vaults[vault.userOrders[j].toChain].vaultAddress,
-                        contract: contrs.get(vault.userOrders[j].toChain),
-                        methodName: "swapOrderStatus",
-                        params: [orderHash]
-                    });
-                }
-            });
-        }
-        //call
-        let promises = [];
-        chainTask.forEach((t, chainId) => {
-            let prom = t.wallet.doMulticall(t.calls.concat(t.callsTo)).then(res => t.res = res).catch(x => { console.log("fetchOrdersStatus call failed", chainId, t.calls, x); return []; });
-            t.prom = prom;
-            if (t.calls.length > 0)
-                promises.push(prom);
-        });
-        await Promise.all(promises);
-        //write
-        for (let i = 0; i < vaultGroupsStore.length; i++) {
-            (0, index_7.forEachNumberIndex)(vaultGroupsStore[i].vaults, async (v, chainId) => {
-                let t = chainTask.get(chainId);
-                if (t?.calls.length <= 0 || t.res.length <= 0)
-                    return console.log("fetchOrdersStatus write no results or no calls", chainId, t);
-                for (let j = 0; j < v.userOrders.length; j++) {
-                    let x = t.res[j];
-                    if (x)
-                        v.userOrders[j].fromStatus = x.toNumber();
-                }
-            });
-        }
-        //write toChain OrderStatus
-        chainTask.forEach((t, chainId) => {
-            if (t.callsTo.length <= 0)
-                return;
-            let start = t.calls.length;
-            for (let i = 0; i < t.callsTo.length; i++) {
-                let ids = t.callsToIndex[i];
-                let res = t.res[i + start];
-                let order = vaultGroupsStore[ids.vgIndex].vaults[ids.fromChain].userOrders[ids.orderIndex];
-                order.toStatus = res.toNumber();
-                order.status = (0, index_7.determineOrderStatus)(order.expire, order.fromStatus, order.toStatus);
-                console.log(`${order.fromChain},${vaultGroupsStore[ids.vgIndex].assetName},${order.id} `, `${contractOrderStatusToString(order.fromStatus)}->${contractOrderStatusToString(order.toStatus)} = ${orderStatusToString(order.status)}`, `${new eth_wallet_4.BigNumber(new Date().getTime()).shiftedBy(-3).gte(order.expire) ? "💀expired" : "⏳not expired"}`);
-            }
-        });
-        console.log("fetchOrdersStatus end");
-        return vaultGroupsStore;
-    }
-    function contractOrderStatusToString(os) {
-        if ((0, index_7.isContractVaultOrderStatus)(os)) {
-            switch (os) {
-                case index_7.ContractVaultOrderStatus.NotSpecified: //0
-                    return "NotSpecified";
-                case index_7.ContractVaultOrderStatus.Pending: //1
-                    return "Pending";
-                case index_7.ContractVaultOrderStatus.Executed: //2
-                    return "Executed";
-                case index_7.ContractVaultOrderStatus.RequestCancel: //3
-                    return "RequestCancel";
-                case index_7.ContractVaultOrderStatus.RefundApproved: //4
-                    return "RefundApproved";
-                case index_7.ContractVaultOrderStatus.Cancelled: //5
-                    return "Cancelled";
-                case index_7.ContractVaultOrderStatus.RequestAmend: //6:
-                    return "RequestAmend";
-            }
-        }
-        console.log("error vaultOrderStatusToString", os);
-    }
-    function orderStatusToString(os) {
-        if ((0, index_7.isVaultOrderStatus)(os)) {
-            switch (os) {
-                case index_7.VaultOrderStatus.Pending:
-                    return "Pending";
-                case index_7.VaultOrderStatus.Executed:
-                    return "Executed";
-                case index_7.VaultOrderStatus.RequestCancel:
-                    return "RequestCancel";
-                case index_7.VaultOrderStatus.RefundApproved:
-                    return "RefundApproved";
-                case index_7.VaultOrderStatus.Cancelled:
-                    return "Cancelled";
-                case index_7.VaultOrderStatus.RequestAmend:
-                    return "RequestAmend";
-                case index_7.VaultOrderStatus.Expired:
-                    return "Expired";
-            }
-        }
-        console.log("error orderStatusToString", os);
-    }
-    async function addLiquidity(vaultAddress, assetAmount) {
-        let bv = new oswap_cross_chain_bridge_contract_1.Contracts.OSWAP_BridgeVault(eth_wallet_4.Wallet.getClientInstance(), vaultAddress);
-        return await bv.addLiquidity(assetAmount);
     }
 });
 define("@scom/scom-xchain-swap/crosschain-utils/index.ts", ["require", "exports", "@ijstech/eth-wallet", "@scom/scom-commission-proxy-contract", "@scom/scom-xchain-swap/crosschain-utils/API.ts"], function (require, exports, eth_wallet_5, scom_commission_proxy_contract_1, API_1) {
@@ -1714,7 +1373,7 @@ define("@scom/scom-xchain-swap/languages/main.json.ts", ["require", "exports"], 
             "the_order_was_created_successfully!": "The order was created successfully!",
             "do_you_want_to_view_the_record": "Do you want to view the record?",
             "current_url_hash": "Current URL Hash",
-            "record_url": "Record URL",
+            "record_url": "Bridge Record URL",
             "enable_url_params": "Enable URL Params?",
             "networks": "Networks",
             "chain_id": "Chain Id",
@@ -1777,7 +1436,7 @@ define("@scom/scom-xchain-swap/languages/main.json.ts", ["require", "exports"], 
             "the_order_was_created_successfully!": "訂單已成功創建！",
             "do_you_want_to_view_the_record": "您是否想查看記錄？",
             "current_url_hash": "當前 URL 哈希",
-            "record_url": "記錄 URL",
+            "record_url": "橋樑記錄 URL",
             "enable_url_params": "啟用 URL 參數？",
             "networks": "網絡",
             "chain_id": "鏈 ID",
@@ -1840,7 +1499,7 @@ define("@scom/scom-xchain-swap/languages/main.json.ts", ["require", "exports"], 
             "the_order_was_created_successfully!": "Đơn hàng đã được tạo thành công!",
             "do_you_want_to_view_the_record": "Bạn có muốn xem lại bản ghi không?",
             "current_url_hash": "Mã URL Hiện Tại",
-            "record_url": "URL Ghi Lại",
+            "record_url": "URL Bản Ghi Cầu Nối",
             "enable_url_params": "Kích Hoạt Tham Số URL?",
             "networks": "Mạng Lưới",
             "chain_id": "ID Chuỗi",
@@ -2016,19 +1675,19 @@ define("@scom/scom-xchain-swap/languages/index.ts", ["require", "exports", "@sco
 define("@scom/scom-xchain-swap/price-info/index.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-xchain-swap/assets.ts", "@scom/scom-xchain-swap/languages/index.ts", "@scom/scom-xchain-swap/price-info/index.css.ts"], function (require, exports, components_5, assets_1, index_8) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.PriceInfo = void 0;
+    exports.XchainSwapPriceInfo = void 0;
     ;
-    let PriceInfo = class PriceInfo extends components_5.Module {
+    let XchainSwapPriceInfo = class XchainSwapPriceInfo extends components_5.Module {
         constructor(parent, options) {
             super(parent, options);
             this.renderItems = async () => {
-                if (this.Items.length && this.priceContent?.children?.length === this.Items.length) {
+                if (this.items.length && this.priceContent?.children?.length === this.items.length) {
                     this.updateItems();
                     return;
                 }
                 this.priceContent.clearInnerHTML();
-                for (let i = 0; i < this.Items.length; i++) {
-                    const item = this.Items[i];
+                for (let i = 0; i < this.items.length; i++) {
+                    const item = this.items[i];
                     const row = new components_5.HStack(undefined, {
                         gap: 2,
                         wrap: 'wrap',
@@ -2098,8 +1757,8 @@ define("@scom/scom-xchain-swap/price-info/index.tsx", ["require", "exports", "@i
                 return iconTooltip;
             };
             this.updateItems = async () => {
-                for (let i = 0; i < this.Items.length; i++) {
-                    const item = this.Items[i];
+                for (let i = 0; i < this.items.length; i++) {
+                    const item = this.items[i];
                     const row = this.priceContent.children[i];
                     const iconTooltip = row.querySelector('.icon-tooltip');
                     const titleLabel = row.firstChild;
@@ -2133,10 +1792,10 @@ define("@scom/scom-xchain-swap/price-info/index.tsx", ["require", "exports", "@i
                 }
             };
         }
-        get Items() {
+        get items() {
             return this._items;
         }
-        set Items(value) {
+        set items(value) {
             this._items = value;
             this.renderItems();
         }
@@ -2150,10 +1809,10 @@ define("@scom/scom-xchain-swap/price-info/index.tsx", ["require", "exports", "@i
                 this.$render("i-panel", { id: "priceContent" })));
         }
     };
-    PriceInfo = __decorate([
-        (0, components_5.customElements)('price-info')
-    ], PriceInfo);
-    exports.PriceInfo = PriceInfo;
+    XchainSwapPriceInfo = __decorate([
+        (0, components_5.customElements)('xchain-swap-price-info')
+    ], XchainSwapPriceInfo);
+    exports.XchainSwapPriceInfo = XchainSwapPriceInfo;
 });
 define("@scom/scom-xchain-swap/expert-mode-settings/index.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_6) {
     "use strict";
@@ -2214,9 +1873,9 @@ define("@scom/scom-xchain-swap/expert-mode-settings/index.css.ts", ["require", "
 define("@scom/scom-xchain-swap/expert-mode-settings/index.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-xchain-swap/expert-mode-settings/index.css.ts", "@scom/scom-xchain-swap/languages/index.ts"], function (require, exports, components_7, index_css_1, index_9) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.ExpertModeSettings = void 0;
+    exports.XchainSwapExpertModeSettings = void 0;
     ;
-    let ExpertModeSettings = class ExpertModeSettings extends components_7.Module {
+    let XchainSwapExpertModeSettings = class XchainSwapExpertModeSettings extends components_7.Module {
         constructor(state, parent, options) {
             super(parent, options);
             this.state = state;
@@ -2249,11 +1908,11 @@ define("@scom/scom-xchain-swap/expert-mode-settings/index.tsx", ["require", "exp
                     this.$render("i-button", { width: "100%", height: "auto", caption: "$turn_on_expert_mode", onClick: this.onToggle }))));
         }
     };
-    ExpertModeSettings = __decorate([
+    XchainSwapExpertModeSettings = __decorate([
         components_7.customModule,
-        (0, components_7.customElements)('xchain-expert-mode-settings')
-    ], ExpertModeSettings);
-    exports.ExpertModeSettings = ExpertModeSettings;
+        (0, components_7.customElements)('xchain-swap-expert-mode-settings')
+    ], XchainSwapExpertModeSettings);
+    exports.XchainSwapExpertModeSettings = XchainSwapExpertModeSettings;
     ;
 });
 ///<amd-module name='@scom/scom-xchain-swap/transaction-settings-layout/index.css.ts'/> 
@@ -2408,11 +2067,11 @@ define("@scom/scom-xchain-swap/transaction-settings-layout/index.css.ts", ["requ
 define("@scom/scom-xchain-swap/transaction-settings-layout/index.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-xchain-swap/transaction-settings-layout/index.css.ts", "@scom/scom-xchain-swap/languages/index.ts"], function (require, exports, components_9, index_css_2, index_10) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.TransactionSettingsLayout = void 0;
+    exports.XchainSwapTransactionSettingsLayout = void 0;
     const Theme = components_9.Styles.Theme.ThemeVars;
     ;
     const listSlippage = [0.1, 0.5, 1];
-    let TransactionSettingsLayout = class TransactionSettingsLayout extends components_9.Module {
+    let XchainSwapTransactionSettingsLayout = class XchainSwapTransactionSettingsLayout extends components_9.Module {
         constructor(state, parent, options) {
             super(parent, options);
             this.onActiveItem = (source) => {
@@ -2642,11 +2301,11 @@ define("@scom/scom-xchain-swap/transaction-settings-layout/index.tsx", ["require
     };
     __decorate([
         (0, components_9.observable)()
-    ], TransactionSettingsLayout.prototype, "slippageToleranceMessage", void 0);
-    TransactionSettingsLayout = __decorate([
-        (0, components_9.customElements)('xchain-transaction-settings-layout')
-    ], TransactionSettingsLayout);
-    exports.TransactionSettingsLayout = TransactionSettingsLayout;
+    ], XchainSwapTransactionSettingsLayout.prototype, "slippageToleranceMessage", void 0);
+    XchainSwapTransactionSettingsLayout = __decorate([
+        (0, components_9.customElements)('xchain-swap-transaction-settings-layout')
+    ], XchainSwapTransactionSettingsLayout);
+    exports.XchainSwapTransactionSettingsLayout = XchainSwapTransactionSettingsLayout;
     ;
 });
 define("@scom/scom-xchain-swap/transaction-settings/index.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_10) {
@@ -2682,9 +2341,9 @@ define("@scom/scom-xchain-swap/transaction-settings/index.css.ts", ["require", "
 define("@scom/scom-xchain-swap/transaction-settings/index.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-xchain-swap/transaction-settings-layout/index.tsx", "@scom/scom-xchain-swap/transaction-settings/index.css.ts", "@scom/scom-xchain-swap/languages/index.ts"], function (require, exports, components_11, index_11, index_css_3, index_12) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.TransactionSettings = void 0;
+    exports.XchainSwapTransactionSettings = void 0;
     ;
-    let TransactionSettings = class TransactionSettings extends components_11.Module {
+    let XchainSwapTransactionSettings = class XchainSwapTransactionSettings extends components_11.Module {
         get showCrossChain() {
             return this._showCrossChain;
         }
@@ -2702,7 +2361,7 @@ define("@scom/scom-xchain-swap/transaction-settings/index.tsx", ["require", "exp
             this.i18n.init({ ...index_12.transactionsJson });
             this.classList.add(index_css_3.default);
             super.init();
-            this.transactionLayout = new index_11.TransactionSettingsLayout(this.state);
+            this.transactionLayout = new index_11.XchainSwapTransactionSettingsLayout(this.state);
             this.mainContent.appendChild(this.transactionLayout);
             this.transactionLayout.showCrossChain = this.showCrossChain;
             this.transactionModal.title = this.i18n.get('$transaction_settings');
@@ -2718,11 +2377,11 @@ define("@scom/scom-xchain-swap/transaction-settings/index.tsx", ["require", "exp
                 this.$render("i-panel", { id: "mainContent" })));
         }
     };
-    TransactionSettings = __decorate([
+    XchainSwapTransactionSettings = __decorate([
         components_11.customModule,
-        (0, components_11.customElements)('xchain-transaction-settings')
-    ], TransactionSettings);
-    exports.TransactionSettings = TransactionSettings;
+        (0, components_11.customElements)('xchain-swap-transaction-settings')
+    ], XchainSwapTransactionSettings);
+    exports.XchainSwapTransactionSettings = XchainSwapTransactionSettings;
     ;
 });
 define("@scom/scom-xchain-swap/index.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_12) {
@@ -3371,7 +3030,7 @@ define("@scom/scom-xchain-swap/formSchema.ts", ["require", "exports", "@scom/sco
                     //     title: '$current_url_hash',
                     //     type: 'string'
                     // },
-                    // enableUrlParams: {
+                    // urlParamsEnabled: {
                     //     title: '$enable_url_params',
                     //     type: 'boolean'
                     // },
@@ -3433,7 +3092,7 @@ define("@scom/scom-xchain-swap/formSchema.ts", ["require", "exports", "@scom/sco
                             // },
                             // {
                             //     type: 'Control',
-                            //     scope: '#/properties/enableUrlParams'
+                            //     scope: '#/properties/urlParamsEnabled'
                             // },
                             {
                                 type: 'Control',
@@ -4436,8 +4095,8 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
             };
             this.initializeWidgetConfig = async () => {
                 setTimeout(async () => {
-                    this.xchainModel.getAddressFromUrl();
                     await this.initWallet();
+                    this.xchainModel.getAddressFromUrl();
                     this.xchainModel.calculateDefaultTokens();
                     this.xchainModel.chainId = this.state.getChainId();
                     this.swapButtonText = this.getSwapButtonText();
@@ -4478,7 +4137,7 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
                     this.lastUpdated = 0;
                     if (!this.xchainModel.record)
                         this.swapBtn.classList.add('hidden');
-                    this.onRenderPriceInfo();
+                    await this.onRenderPriceInfo();
                     this.xchainModel.redirectToken();
                     await this.handleAddRoute();
                 });
@@ -4624,6 +4283,9 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
                 else {
                     this.isSrcOpened = true;
                     this.mdSourceChain.visible = true;
+                    setTimeout(() => {
+                        this.mdSourceChain.refresh();
+                    }, 1);
                 }
             };
             this.onCloseSourceChain = () => {
@@ -4638,6 +4300,9 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
                 else {
                     this.isDesOpened = true;
                     this.mdDestinationChain.visible = true;
+                    setTimeout(() => {
+                        this.mdDestinationChain.refresh();
+                    }, 1);
                 }
             };
             this.onCloseDesChain = () => {
@@ -4841,6 +4506,7 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
                         this.$render("i-label", { caption: this.i18n.get('$total_transaction_fee') })),
                     this.$render("i-label", { class: "ml-auto", caption: this.xchainModel.getTradeFeeExactAmount() })));
                 this.btnCloseFees.caption = this.i18n.get('$close');
+                this.modalFees.title = this.i18n.get('$transaction_fee_details');
                 this.modalFees.visible = true;
             };
             this.closeModalFees = () => {
@@ -5138,12 +4804,9 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
         }
         async init() {
             this.i18n.init({ ...index_23.mainJson });
-            super.init();
-            this.mdSourceChain.visible = this.mdDestinationChain.visible = true;
+            await super.init();
             this.xchainModel.chainId = this.state.getChainId();
             this.swapButtonText = this.getSwapButtonText();
-            this.mdSourceChain.visible = this.mdDestinationChain.visible = false;
-            this.modalFees.title = this.i18n.get('$transaction_fee_details');
             this.initExpertModal();
             this.initTransactionModal();
             const lazyLoad = this.getAttribute('lazyLoad', true, false);
@@ -5303,7 +4966,7 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
             const lgKey = isFrom ? '$input_is_estimated_if_the_price_change_by_more_than_your_transaction_will_revert' : '$output_is_estimated_if_the_price_change_by_more_than_your_transaction_will_revert';
             this.estimateMsg = this.i18n.get(lgKey, { value: `${slippageTolerance} ` });
             this.payOrReceiveText = isFrom ? '$you_will_pay_at_most' : '$you_will_receive_at_least';
-            this.priceInfo2.Items = this.xchainModel.getPriceInfo();
+            this.priceInfo2.items = this.xchainModel.getPriceInfo();
             this.swapModal.title = this.i18n.get('$confirm_swap');
             this.swapModal.visible = true;
         }
@@ -5383,7 +5046,7 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
             const enabled = !this.isSwapButtonDisabled();
             this.swapBtn.enabled = enabled || !(0, index_17.isWalletConnected)() || !this.state.isRpcWalletConnected();
             this.swapBtn.rightIcon.visible = false;
-            this.priceInfo.Items = this.xchainModel.getPriceInfo();
+            this.priceInfo.items = this.xchainModel.getPriceInfo();
         }
         onTokenInputChange(source) {
             clearTimeout(this.timeout);
@@ -5440,7 +5103,7 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
         }
         resetValuesByInput() {
             this.initRoutes();
-            this.priceInfo.Items = this.xchainModel.getPriceInfo();
+            this.priceInfo.items = this.xchainModel.getPriceInfo();
             this.xchainModel.fromInputValue = new eth_wallet_6.BigNumber(0);
             this.xchainModel.toInputValue = new eth_wallet_6.BigNumber(0);
             this.xchainModel.redirectToken();
@@ -5548,7 +5211,7 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
             this.initRoutes();
             this.onSelectRouteItem(route);
             if (!route) {
-                this.priceInfo.Items = this.xchainModel.getPriceInfo();
+                this.priceInfo.items = this.xchainModel.getPriceInfo();
                 if (this.xchainModel.isEstimated('to')) {
                     const input = this.secondTokenInput;
                     this.xchainModel.toInputValue = new eth_wallet_6.BigNumber(0);
@@ -5571,7 +5234,7 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
         // Price Info
         onTogglePrice(priceInfo) {
             this.isPriceToggled = !this.isPriceToggled;
-            priceInfo.Items = this.xchainModel.getPriceInfo();
+            priceInfo.items = this.xchainModel.getPriceInfo();
         }
         async updateBalances() {
             const chainIds = [...new Set([this.chainId, this.xchainModel.targetChainId])];
@@ -5664,20 +5327,22 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
             }
             this.handleSwapPopup();
         }
-        onRenderPriceInfo() {
+        async onRenderPriceInfo() {
             if (!this.priceInfo) {
-                this.priceInfo = new index_20.PriceInfo();
+                this.priceInfo = new index_20.XchainSwapPriceInfo();
                 this.priceInfo.width = 'auto';
                 this.priceInfo.height = 'auto';
                 this.xchainSwapContainer.appendChild(this.priceInfo);
                 this.priceInfo.onTogglePrice = this.onTogglePrice.bind(this);
+                await this.priceInfo.ready();
             }
-            this.priceInfo.Items = this.xchainModel.getPriceInfo();
+            this.priceInfo.items = this.xchainModel.getPriceInfo();
             if (!this.priceInfo2) {
-                this.priceInfo2 = new index_20.PriceInfo();
+                this.priceInfo2 = new index_20.XchainSwapPriceInfo();
                 this.priceInfo2.width = 'auto';
                 this.priceInfo2.height = 'auto';
                 this.priceInfo2.onTogglePrice = this.onTogglePrice.bind(this);
+                await this.priceInfo2.ready();
             }
             this.priceInfoContainer.appendChild(this.priceInfo2);
         }
@@ -5687,13 +5352,13 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
         initExpertModal() {
             if (this.expertModal)
                 return;
-            this.expertModal = new index_21.ExpertModeSettings(this.state);
+            this.expertModal = new index_21.XchainSwapExpertModeSettings(this.state);
             this.appendChild(this.expertModal);
         }
         initTransactionModal() {
             if (this.transactionModal)
                 return;
-            this.transactionModal = new index_22.TransactionSettings(this.state);
+            this.transactionModal = new index_22.XchainSwapTransactionSettings(this.state);
             this.transactionModal.showCrossChain = true;
             this.appendChild(this.transactionModal);
         }

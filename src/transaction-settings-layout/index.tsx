@@ -24,15 +24,15 @@ const Theme = Styles.Theme.ThemeVars;
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      ['xchain-transaction-settings-layout']: ControlElement;
+      ['xchain-swap-transaction-settings-layout']: ControlElement;
     }
   }
 };
 
 const listSlippage = [0.1, 0.5, 1];
 
-@customElements('xchain-transaction-settings-layout')
-export class TransactionSettingsLayout extends Module {
+@customElements('xchain-swap-transaction-settings-layout')
+export class XchainSwapTransactionSettingsLayout extends Module {
   private slippageGroup: Panel;
   private slippageInput: Input;
   private warningIcon: Icon;

@@ -9,7 +9,3 @@ export {
 } from './tokens/index';
 
 export * from './core';
-
-export {
-  dummyAddressList,
-} from './dummy'

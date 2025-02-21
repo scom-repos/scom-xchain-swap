@@ -6,13 +6,13 @@ import { priceInfoJson } from '../languages/index';
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      ['price-info']: ControlElement;
+      ['xchain-swap-price-info']: ControlElement;
     }
   }
 };
 
-@customElements('price-info')
-export class PriceInfo extends Module {
+@customElements('xchain-swap-price-info')
+export class XchainSwapPriceInfo extends Module {
   private priceContent: Panel;
 
   private _items: any[];
@@ -22,24 +22,23 @@ export class PriceInfo extends Module {
     super(parent, options);
   }
 
-  get Items(): any[] {
+  get items(): any[] {
     return this._items;
   }
-  set Items(value: any[]) {
+  set items(value: any[]) {
     this._items = value;
     this.renderItems();
   }
 
   renderItems = async () => {
-    if (this.Items.length && this.priceContent?.children?.length === this.Items.length) {
+    if (this.items.length && this.priceContent?.children?.length === this.items.length) {
       this.updateItems();
       return;
     }
-
     this.priceContent.clearInnerHTML();
 
-    for (let i = 0; i < this.Items.length; i++) {
-      const item = this.Items[i];
+    for (let i = 0; i < this.items.length; i++) {
+      const item = this.items[i];
       const row = new HStack(undefined, {
         gap: 2,
         wrap: 'wrap',
@@ -114,8 +113,8 @@ export class PriceInfo extends Module {
   }
 
   updateItems = async () => {
-    for (let i = 0; i < this.Items.length; i++) {
-      const item = this.Items[i];
+    for (let i = 0; i < this.items.length; i++) {
+      const item = this.items[i];
       const row = this.priceContent.children[i] as HStack;
       const iconTooltip = row.querySelector('.icon-tooltip');
       const titleLabel = row.firstChild as Label;

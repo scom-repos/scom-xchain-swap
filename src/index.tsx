@@ -44,14 +44,14 @@ import {
   getVaultGroups,
   isSupportedCrossChain
 } from './crosschain-utils/index';
-import { PriceInfo } from './price-info/index';
+import { XchainSwapPriceInfo } from './price-info/index';
 import ScomTokenInput from '@scom/scom-token-input';
 import ScomTxStatusModal from '@scom/scom-tx-status-modal';
 import ScomDappContainer from '@scom/scom-dapp-container'
 import { tokenStore, assets as tokenAssets, ITokenObject } from '@scom/scom-token-list';
 import ScomWalletModal, { IWalletPlugin } from '@scom/scom-wallet-modal';
-import { ExpertModeSettings } from './expert-mode-settings/index';
-import { TransactionSettings } from './transaction-settings/index';
+import { XchainSwapExpertModeSettings } from './expert-mode-settings/index';
+import { XchainSwapTransactionSettings } from './transaction-settings/index';
 import { btnDropdownStyle, contentXchainSwap, inputTokenContainerStyle, xchainSwapContainerStyle, xchainSwapStyle } from './index.css';
 import configData from './data.json';
 import { Block, BlockNoteEditor, BlockNoteSpecs, callbackFnType, executeFnType, getWidgetEmbedUrl, parseUrl } from '@scom/scom-blocknote-sdk';
@@ -112,8 +112,8 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
   private xchainPayCol: VStack;
   private xchainReceiveCol: VStack;
   private swapModal: Modal;
-  private priceInfo: PriceInfo;
-  private priceInfo2: PriceInfo;
+  private priceInfo: XchainSwapPriceInfo;
+  private priceInfo2: XchainSwapPriceInfo;
   private priceInfoContainer: Panel;
   private fromTokenImage: Image;
   private fromTokenLabel: Label;
@@ -178,8 +178,8 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
   private mdSourceChain: Modal;
   private listElmSrcChain: VStack;
   private isSrcOpened: boolean;
-  private expertModal: ExpertModeSettings;
-  private transactionModal: TransactionSettings;
+  private expertModal: XchainSwapExpertModeSettings;
+  private transactionModal: XchainSwapTransactionSettings;
 
   private btnDestinationChain: Button;
   private mdDestinationChain: Modal;
@@ -560,12 +560,9 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
 
   async init() {
     this.i18n.init({ ...mainJson });
-    super.init();
-    this.mdSourceChain.visible = this.mdDestinationChain.visible = true;
+    await super.init();
     this.xchainModel.chainId = this.state.getChainId();
     this.swapButtonText = this.getSwapButtonText();
-    this.mdSourceChain.visible = this.mdDestinationChain.visible = false;
-    this.modalFees.title = this.i18n.get('$transaction_fee_details');
     this.initExpertModal();
     this.initTransactionModal();
     const lazyLoad = this.getAttribute('lazyLoad', true, false);
@@ -627,8 +624,8 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
 
   private initializeWidgetConfig = async () => {
     setTimeout(async () => {
-      this.xchainModel.getAddressFromUrl();
       await this.initWallet();
+      this.xchainModel.getAddressFromUrl();
       this.xchainModel.calculateDefaultTokens();
       this.xchainModel.chainId = this.state.getChainId();
       this.swapButtonText = this.getSwapButtonText();
@@ -671,7 +668,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
       this.lastUpdated = 0;
       if (!this.xchainModel.record)
         this.swapBtn.classList.add('hidden');
-      this.onRenderPriceInfo();
+      await this.onRenderPriceInfo();
       this.xchainModel.redirectToken();
       await this.handleAddRoute();
     })
@@ -853,7 +850,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
     const lgKey = isFrom ? '$input_is_estimated_if_the_price_change_by_more_than_your_transaction_will_revert' : '$output_is_estimated_if_the_price_change_by_more_than_your_transaction_will_revert';
     this.estimateMsg = this.i18n.get(lgKey, { value: `${slippageTolerance} ` });
     this.payOrReceiveText = isFrom ? '$you_will_pay_at_most' : '$you_will_receive_at_least';
-    this.priceInfo2.Items = this.xchainModel.getPriceInfo();
+    this.priceInfo2.items = this.xchainModel.getPriceInfo();
     this.swapModal.title = this.i18n.get('$confirm_swap');
     this.swapModal.visible = true;
   }
@@ -943,7 +940,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
     const enabled = !this.isSwapButtonDisabled();
     this.swapBtn.enabled = enabled || !isWalletConnected() || !this.state.isRpcWalletConnected();
     this.swapBtn.rightIcon.visible = false;
-    this.priceInfo.Items = this.xchainModel.getPriceInfo();
+    this.priceInfo.items = this.xchainModel.getPriceInfo();
   }
 
   private onTokenInputChange(source: Control) {
@@ -999,7 +996,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
 
   private resetValuesByInput() {
     this.initRoutes();
-    this.priceInfo.Items = this.xchainModel.getPriceInfo();
+    this.priceInfo.items = this.xchainModel.getPriceInfo();
     this.xchainModel.fromInputValue = new BigNumber(0);
     this.xchainModel.toInputValue = new BigNumber(0);
     this.xchainModel.redirectToken();
@@ -1107,7 +1104,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
     this.onSelectRouteItem(route);
 
     if (!route) {
-      this.priceInfo.Items = this.xchainModel.getPriceInfo();
+      this.priceInfo.items = this.xchainModel.getPriceInfo();
       if (this.xchainModel.isEstimated('to')) {
         const input = this.secondTokenInput;
         this.xchainModel.toInputValue = new BigNumber(0);
@@ -1126,9 +1123,9 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
   }
 
   // Price Info
-  private onTogglePrice(priceInfo: PriceInfo) {
+  private onTogglePrice(priceInfo: XchainSwapPriceInfo) {
     this.isPriceToggled = !this.isPriceToggled;
-    priceInfo.Items = this.xchainModel.getPriceInfo();
+    priceInfo.items = this.xchainModel.getPriceInfo();
   }
 
   private async updateBalances() {
@@ -1294,21 +1291,23 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
     await this.handleAddRoute();
   }
 
-  private onRenderPriceInfo() {
+  private async onRenderPriceInfo() {
     if (!this.priceInfo) {
-      this.priceInfo = new PriceInfo();
+      this.priceInfo = new XchainSwapPriceInfo();
       this.priceInfo.width = 'auto';
       this.priceInfo.height = 'auto';
       this.xchainSwapContainer.appendChild(this.priceInfo);
       this.priceInfo.onTogglePrice = this.onTogglePrice.bind(this);
+      await this.priceInfo.ready();
     }
-    this.priceInfo.Items = this.xchainModel.getPriceInfo();
+    this.priceInfo.items = this.xchainModel.getPriceInfo();
 
     if (!this.priceInfo2) {
-      this.priceInfo2 = new PriceInfo();
+      this.priceInfo2 = new XchainSwapPriceInfo();
       this.priceInfo2.width = 'auto';
       this.priceInfo2.height = 'auto';
       this.priceInfo2.onTogglePrice = this.onTogglePrice.bind(this);
+      await this.priceInfo2.ready();
     }
     this.priceInfoContainer.appendChild(this.priceInfo2);
   }
@@ -1333,6 +1332,9 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
     } else {
       this.isSrcOpened = true;
       this.mdSourceChain.visible = true;
+      setTimeout(() => {
+        this.mdSourceChain.refresh();
+      }, 1)
     }
   }
 
@@ -1348,6 +1350,9 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
     } else {
       this.isDesOpened = true;
       this.mdDestinationChain.visible = true;
+      setTimeout(() => {
+        this.mdDestinationChain.refresh();
+      }, 1)
     }
   }
 
@@ -1567,6 +1572,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
       </i-hstack>
     )
     this.btnCloseFees.caption = this.i18n.get('$close');
+    this.modalFees.title = this.i18n.get('$transaction_fee_details');
     this.modalFees.visible = true;
   }
 
@@ -1576,13 +1582,13 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
 
   private initExpertModal() {
     if (this.expertModal) return;
-    this.expertModal = new ExpertModeSettings(this.state);
+    this.expertModal = new XchainSwapExpertModeSettings(this.state);
     this.appendChild(this.expertModal);
   }
 
   private initTransactionModal() {
     if (this.transactionModal) return;
-    this.transactionModal = new TransactionSettings(this.state);
+    this.transactionModal = new XchainSwapTransactionSettings(this.state);
     this.transactionModal.showCrossChain = true;
     this.appendChild(this.transactionModal);
   }

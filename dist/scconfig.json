@@ -12,7 +12,6 @@
         "@scom/scom-commission-proxy-contract",
         "@ijstech/eth-contract",
         "@scom/oswap-cross-chain-bridge-contract",
-        "@scom/oswap-openswap-contract",
         "@scom/scom-multicall",
         "@scom/scom-token-modal",
         "@scom/scom-token-input",
