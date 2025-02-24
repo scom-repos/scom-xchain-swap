@@ -72,7 +72,7 @@ export interface VaultConstant {
   vaultDecimals?: number,
   softCap: number,
   //fee, may changed by trolls
-  baseFee: string,//fixed amount
+  baseFee: string,//fixed amount (tokenIn)
   protocolFee: string,//linear proportional with amount in
   transactionFee: string,//linear proportional with amount in
   imbalanceFee: string,//linear proportional with amount in
