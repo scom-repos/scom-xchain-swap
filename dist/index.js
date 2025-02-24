@@ -1362,6 +1362,7 @@ define("@scom/scom-xchain-swap/languages/main.json.ts", ["require", "exports"], 
             "insufficient_balance": "Insufficient {{symbol}} balance",
             "invalid_pair": "Invalid pair",
             "circuit_breaker_triggered": "Circuit breaker triggered",
+            "amount_lower_than_base_fee": "Amount lower than base fee",
             "base_fee": "Base Fee",
             "this_fee_is_paid_to_the_trolls_to_cover_gas_fee_on_the_target_chain": "This fee is paid to the trolls to cover gas fee on the Target Chain",
             "bridge_vault_liquidity_fee": "Bridge Vault Liquidity Fee",
@@ -1389,6 +1390,7 @@ define("@scom/scom-xchain-swap/languages/main.json.ts", ["require", "exports"], 
             "cap_reached": "達到上限",
             "cap": "上限",
             "circuit_breaker_triggered": "觸發斷路器",
+            "amount_lower_than_base_fee": "金額低於基本費用",
             "close": "關閉",
             "cancel": "取消",
             "confirm_swap": "確認交換",
@@ -1488,6 +1490,7 @@ define("@scom/scom-xchain-swap/languages/main.json.ts", ["require", "exports"], 
             "insufficient_balance": "Số dư {{symbol}} không đủ",
             "invalid_pair": "Cặp này không hợp lệ",
             "circuit_breaker_triggered": "Cầu dao đã kích hoạt",
+            "amount_lower_than_base_fee": "Số tiền thấp hơn phí cơ bản",
             "base_fee": "Phí Cơ bản",
             "this_fee_is_paid_to_the_trolls_to_cover_gas_fee_on_the_target_chain": "Phí này được trả cho các trolls để trang trải phí gas trên Chuỗi Đích.",
             "imbalance_fee": "Phí Mất Cân bằng",
@@ -2387,7 +2390,7 @@ define("@scom/scom-xchain-swap/transaction-settings/index.tsx", ["require", "exp
 define("@scom/scom-xchain-swap/index.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_12) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.inputTokenContainerStyle = exports.contentXchainSwap = exports.btnDropdownStyle = exports.xchainSwapContainerStyle = exports.xchainSwapStyle = void 0;
+    exports.customTokenInputStyle = exports.inputTokenContainerStyle = exports.contentXchainSwap = exports.btnDropdownStyle = exports.xchainSwapContainerStyle = exports.xchainSwapStyle = void 0;
     const Theme = components_12.Styles.Theme.ThemeVars;
     exports.xchainSwapStyle = components_12.Styles.style({
         $nest: {
@@ -2827,6 +2830,15 @@ define("@scom/scom-xchain-swap/index.css.ts", ["require", "exports", "@ijstech/c
     exports.inputTokenContainerStyle = components_12.Styles.style({
         padding: '0.5rem 1rem',
         marginInline: '-15px'
+    });
+    exports.customTokenInputStyle = components_12.Styles.style({
+        $nest: {
+            '#inputAmount input': {
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
+            }
+        }
     });
 });
 define("@scom/scom-xchain-swap/formSchema.ts", ["require", "exports", "@scom/scom-network-picker", "@scom/scom-token-input", "@scom/scom-xchain-swap/store/index.ts", "@scom/scom-xchain-swap/data.json.ts", "@scom/scom-token-list"], function (require, exports, scom_network_picker_1, scom_token_input_1, index_13, data_json_2, scom_token_list_2) {
@@ -5285,6 +5297,9 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
             if (this.xchainModel.isInsufficientBalance) {
                 return this.i18n.get('$insufficient_balance', { symbol: this.xchainModel.fromToken?.symbol });
             }
+            if (this.xchainModel.record.toAmount.lte(0)) {
+                return this.i18n.get('$amount_lower_than_base_fee');
+            }
             return this.i18n.get('$create_order');
         }
         getWarningMessageText() {
@@ -5301,6 +5316,9 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
             let balance = this.xchainModel.getBalance(this.xchainModel.fromToken);
             if (this.xchainModel.record.fromAmount.gt(balance)) {
                 return this.i18n.get('$insufficient_balance', { symbol: this.xchainModel.fromToken?.symbol });
+            }
+            if (this.xchainModel.record.toAmount.lte(0)) {
+                return this.i18n.get('$amount_lower_than_base_fee');
             }
             return '';
         }
@@ -5400,7 +5418,7 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
                                                 font: { size: '1rem', weight: 700, color: Theme.input.fontColor },
                                                 lineHeight: 1.5,
                                                 opacity: 1
-                                            }, onInputAmountChanged: this.onTokenInputChange, onSelectToken: (token) => this.onSelectToken(token, true) })))),
+                                            }, class: index_css_4.customTokenInputStyle, onInputAmountChanged: this.onTokenInputChange, onSelectToken: (token) => this.onSelectToken(token, true) })))),
                             this.$render("i-hstack", { id: "minSwapHintLabel", gap: 4, verticalAlignment: "start", opacity: 0.9 },
                                 this.$render("i-icon", { name: "star", fill: Theme.colors.primary.main, width: 13, height: 13 }),
                                 this.$render("i-label", { caption: "$no_crosschain_routes_are_found_you_may_try_updating_the_input_amount_or_selecting_another_token", font: { size: '0.8rem', color: Theme.colors.primary.main } })),
@@ -5423,7 +5441,7 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
                                                 font: { size: '1rem', weight: 700, color: Theme.input.fontColor },
                                                 lineHeight: 1.5,
                                                 opacity: 1
-                                            }, onInputAmountChanged: this.onTokenInputChange, onSelectToken: (token) => this.onSelectToken(token, false) }))))),
+                                            }, class: index_css_4.customTokenInputStyle, onInputAmountChanged: this.onTokenInputChange, onSelectToken: (token) => this.onSelectToken(token, false) }))))),
                         this.$render("i-panel", { class: "swap-btn-container", width: "100%" },
                             this.$render("i-button", { id: "swapBtn", class: "btn-swap btn-os hidden", height: 67, caption: this.swapButtonText, rightIcon: { spin: true, visible: false }, onClick: this.onClickSwapButton.bind(this) }))),
                     this.$render("i-modal", { id: "swapModal", class: "custom-modal", title: "$confirm_swap", closeIcon: { name: 'times' } },

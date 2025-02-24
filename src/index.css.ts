@@ -444,3 +444,13 @@ export const inputTokenContainerStyle = Styles.style({
   padding: '0.5rem 1rem',
   marginInline: '-15px'
 })
+
+export const customTokenInputStyle = Styles.style({
+  $nest: {
+    '#inputAmount input': {
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis'
+    }
+  }
+})

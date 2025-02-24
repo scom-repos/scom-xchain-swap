@@ -52,7 +52,7 @@ import { tokenStore, assets as tokenAssets, ITokenObject } from '@scom/scom-toke
 import ScomWalletModal, { IWalletPlugin } from '@scom/scom-wallet-modal';
 import { XchainSwapExpertModeSettings } from './expert-mode-settings/index';
 import { XchainSwapTransactionSettings } from './transaction-settings/index';
-import { btnDropdownStyle, contentXchainSwap, inputTokenContainerStyle, xchainSwapContainerStyle, xchainSwapStyle } from './index.css';
+import { btnDropdownStyle, contentXchainSwap, customTokenInputStyle, inputTokenContainerStyle, xchainSwapContainerStyle, xchainSwapStyle } from './index.css';
 import configData from './data.json';
 import { Block, BlockNoteEditor, BlockNoteSpecs, callbackFnType, executeFnType, getWidgetEmbedUrl, parseUrl } from '@scom/scom-blocknote-sdk';
 import { mainJson } from './languages/index';
@@ -1177,6 +1177,9 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
     if (this.xchainModel.isInsufficientBalance) {
       return this.i18n.get('$insufficient_balance', { symbol: this.xchainModel.fromToken?.symbol });
     }
+    if (this.xchainModel.record.toAmount.lte(0)) {
+      return this.i18n.get('$amount_lower_than_base_fee');
+    }
     return this.i18n.get('$create_order');
   }
 
@@ -1194,6 +1197,9 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
     let balance = this.xchainModel.getBalance(this.xchainModel.fromToken)
     if (this.xchainModel.record.fromAmount.gt(balance)) {
       return this.i18n.get('$insufficient_balance', { symbol: this.xchainModel.fromToken?.symbol });
+    }
+    if (this.xchainModel.record.toAmount.lte(0)) {
+      return this.i18n.get('$amount_lower_than_base_fee');
     }
     return '';
   }
@@ -1680,6 +1686,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
                         lineHeight: 1.5,
                         opacity: 1
                       }}
+                      class={customTokenInputStyle}
                       onInputAmountChanged={this.onTokenInputChange}
                       onSelectToken={(token: ITokenObject) => this.onSelectToken(token, true)}
                     ></i-scom-token-input>
@@ -1757,6 +1764,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
                         lineHeight: 1.5,
                         opacity: 1
                       }}
+                      class={customTokenInputStyle}
                       onInputAmountChanged={this.onTokenInputChange}
                       onSelectToken={(token: ITokenObject) => this.onSelectToken(token, false)}
                     ></i-scom-token-input>
