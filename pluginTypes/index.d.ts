@@ -747,6 +747,7 @@ declare module "@scom/scom-xchain-swap/languages/main.json.ts" {
             insufficient_balance: string;
             invalid_pair: string;
             circuit_breaker_triggered: string;
+            amount_lower_than_base_fee: string;
             base_fee: string;
             this_fee_is_paid_to_the_trolls_to_cover_gas_fee_on_the_target_chain: string;
             bridge_vault_liquidity_fee: string;
@@ -774,6 +775,7 @@ declare module "@scom/scom-xchain-swap/languages/main.json.ts" {
             cap_reached: string;
             cap: string;
             circuit_breaker_triggered: string;
+            amount_lower_than_base_fee: string;
             close: string;
             cancel: string;
             confirm_swap: string;
@@ -873,6 +875,7 @@ declare module "@scom/scom-xchain-swap/languages/main.json.ts" {
             insufficient_balance: string;
             invalid_pair: string;
             circuit_breaker_triggered: string;
+            amount_lower_than_base_fee: string;
             base_fee: string;
             this_fee_is_paid_to_the_trolls_to_cover_gas_fee_on_the_target_chain: string;
             imbalance_fee: string;
@@ -1199,6 +1202,7 @@ declare module "@scom/scom-xchain-swap/index.css.ts" {
     export const btnDropdownStyle: string;
     export const contentXchainSwap: string;
     export const inputTokenContainerStyle: string;
+    export const customTokenInputStyle: string;
 }
 /// <amd-module name="@scom/scom-xchain-swap/formSchema.ts" />
 declare module "@scom/scom-xchain-swap/formSchema.ts" {
@@ -1394,6 +1398,7 @@ declare module "@scom/scom-xchain-swap/model/xchainModel.ts" {
     import { ITokenObject } from "@scom/scom-token-list";
     import { IExtendedNetwork } from "@scom/scom-xchain-swap/global/index.ts";
     import { BigNumber } from "@ijstech/eth-contract";
+    import { Route } from "@scom/scom-xchain-swap/crosschain-utils/index.ts";
     interface ISwapOptions {
         showModalFees: () => void;
     }
@@ -1424,18 +1429,18 @@ declare module "@scom/scom-xchain-swap/model/xchainModel.ts" {
         set fromInputValue(value: BigNumber);
         get toInputValue(): BigNumber;
         set toInputValue(value: BigNumber);
-        get record(): any;
-        set record(value: any);
+        get record(): Route;
+        set record(value: Route);
         get fromToken(): ITokenObject;
         set fromToken(token: ITokenObject);
         get toToken(): ITokenObject;
         set toToken(token: ITokenObject);
-        get desChain(): IExtendedNetwork | undefined;
-        set desChain(value: IExtendedNetwork | undefined);
-        get srcChain(): IExtendedNetwork | undefined;
-        set srcChain(value: IExtendedNetwork | undefined);
-        get targetChainId(): number | undefined;
-        set targetChainId(value: number | undefined);
+        get desChain(): IExtendedNetwork;
+        set desChain(value: IExtendedNetwork);
+        get srcChain(): IExtendedNetwork;
+        set srcChain(value: IExtendedNetwork);
+        get targetChainId(): number;
+        set targetChainId(value: number);
         get urlParamsEnabled(): boolean;
         get urlParams(): URLSearchParams;
         set urlParams(value: URLSearchParams);
@@ -1466,7 +1471,7 @@ declare module "@scom/scom-xchain-swap/model/xchainModel.ts" {
         getFeeDetails(): {
             title: string;
             description: string;
-            value: any;
+            value: BigNumber;
         }[];
         getPriceInfo(): ({
             title: string;

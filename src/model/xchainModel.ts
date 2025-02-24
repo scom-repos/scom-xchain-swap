@@ -19,8 +19,8 @@ export class XchainModel {
     showModalFees: () => { },
   };
   private module: Module;
-  private _srcChain: IExtendedNetwork | undefined;
-  private _desChain: IExtendedNetwork | undefined;
+  private _srcChain: IExtendedNetwork;
+  private _desChain: IExtendedNetwork;
   private _fromInputValue: BigNumber;
   private _toInputValue: BigNumber;
   private _isFrom: boolean;
@@ -28,7 +28,7 @@ export class XchainModel {
   private _toToken: ITokenObject;
   private _record: Route;
   private _chainId: number;
-  private _targetChainId: number | undefined;
+  private _targetChainId: number;
   private _supportedChainList: IExtendedNetwork[] = [];
   private _urlParams: URLSearchParams;
   private _fromTokenSymbol: string;
@@ -71,7 +71,7 @@ export class XchainModel {
   get record() {
     return this._record;
   }
-  set record(value: any) {
+  set record(value: Route) {
     this._record = value;
   }
 
@@ -92,21 +92,21 @@ export class XchainModel {
   get desChain() {
     return this._desChain;
   }
-  set desChain(value: IExtendedNetwork | undefined) {
+  set desChain(value: IExtendedNetwork) {
     this._desChain = value;
   }
 
   get srcChain() {
     return this._srcChain;
   }
-  set srcChain(value: IExtendedNetwork | undefined) {
+  set srcChain(value: IExtendedNetwork) {
     this._srcChain = value;
   }
 
   get targetChainId() {
     return this._targetChainId;
   }
-  set targetChainId(value: number | undefined) {
+  set targetChainId(value: number) {
     this._targetChainId = value;
   }
 

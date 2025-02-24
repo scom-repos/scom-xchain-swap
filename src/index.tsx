@@ -52,7 +52,7 @@ import { tokenStore, assets as tokenAssets, ITokenObject } from '@scom/scom-toke
 import ScomWalletModal, { IWalletPlugin } from '@scom/scom-wallet-modal';
 import { XchainSwapExpertModeSettings } from './expert-mode-settings/index';
 import { XchainSwapTransactionSettings } from './transaction-settings/index';
-import { btnDropdownStyle, contentXchainSwap, inputTokenContainerStyle, xchainSwapContainerStyle, xchainSwapStyle } from './index.css';
+import { btnDropdownStyle, contentXchainSwap, customTokenInputStyle, inputTokenContainerStyle, xchainSwapContainerStyle, xchainSwapStyle } from './index.css';
 import configData from './data.json';
 import { Block, BlockNoteEditor, BlockNoteSpecs, callbackFnType, executeFnType, getWidgetEmbedUrl, parseUrl } from '@scom/scom-blocknote-sdk';
 import { mainJson } from './languages/index';
@@ -504,6 +504,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
       await clientWallet.switchNetwork(chainId);
     }
     this.modalSwitchNetwork.visible = false;
+    if (!this.xchainModel.urlParamsEnabled) return;
     const networkList = this.state.getSiteSupportedNetworks();
     const _targetId = Number(urlParams.get('toChainId'));
     const tokenAddress = urlParams.get('token') || '';
@@ -741,9 +742,13 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
     if (oswapIndex > 0) {
       [lstTargetTokenMap[0], lstTargetTokenMap[oswapIndex]] = [lstTargetTokenMap[oswapIndex], lstTargetTokenMap[0]];
     }
-    if (this.xchainModel.fromTokenSymbol && this.xchainModel.toTokenSymbol) {
-      const firstObj = supportedTokens.find((item: ITokenObject) => this.xchainModel.fromTokenSymbol === item.symbol || this.xchainModel.fromTokenSymbol === item.address);
-      const secondObj = lstTargetTokenMap.find((item: ITokenObject) => this.xchainModel.toTokenSymbol === item.symbol || this.xchainModel.toTokenSymbol === item.address);
+    const { urlParamsEnabled, fromToken, toToken, fromTokenSymbol, toTokenSymbol } = this.xchainModel;
+    const fromSymbol = urlParamsEnabled ? fromTokenSymbol : (fromTokenSymbol || fromToken?.symbol);
+    const toSymbol = urlParamsEnabled ? toTokenSymbol : (toTokenSymbol || toToken?.symbol);
+    const needToRedirectToken = urlParamsEnabled && (!fromTokenSymbol || !toTokenSymbol);
+    if (fromSymbol && toSymbol) {
+      const firstObj = supportedTokens.find((item: ITokenObject) => fromSymbol === item.symbol || fromSymbol === item.address);
+      const secondObj = lstTargetTokenMap.find((item: ITokenObject) => toSymbol === item.symbol || toSymbol === item.address);
       this.xchainModel.fromToken = firstObj || defaultCrossChainToken;
       this.xchainModel.toToken = (secondObj || lstTargetTokenMap[0]) as ITokenObject;
       if (this.xchainModel.fromToken && !this.xchainModel.fromToken.chainId) {
@@ -757,6 +762,9 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
       this.firstTokenInput.token = this.xchainModel.fromToken;
       this.secondTokenInput.token = this.xchainModel.toToken;
       this.xchainModel.fromInputValue = new BigNumber(this.xchainModel.fromInputValue.toNumber() || defaultInput);
+      if (needToRedirectToken) {
+        this.xchainModel.redirectToken();
+      }
     } else {
       this.xchainModel.fromInputValue = new BigNumber(defaultInput);
       const { firstDefaultToken, secondDefaultToken } = this.xchainModel.calculateDefaultTokens();
@@ -1169,6 +1177,9 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
     if (this.xchainModel.isInsufficientBalance) {
       return this.i18n.get('$insufficient_balance', { symbol: this.xchainModel.fromToken?.symbol });
     }
+    if (this.xchainModel.record.toAmount.lte(0)) {
+      return this.i18n.get('$amount_lower_than_base_fee');
+    }
     return this.i18n.get('$create_order');
   }
 
@@ -1186,6 +1197,9 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
     let balance = this.xchainModel.getBalance(this.xchainModel.fromToken)
     if (this.xchainModel.record.fromAmount.gt(balance)) {
       return this.i18n.get('$insufficient_balance', { symbol: this.xchainModel.fromToken?.symbol });
+    }
+    if (this.xchainModel.record.toAmount.lte(0)) {
+      return this.i18n.get('$amount_lower_than_base_fee');
     }
     return '';
   }
@@ -1672,6 +1686,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
                         lineHeight: 1.5,
                         opacity: 1
                       }}
+                      class={customTokenInputStyle}
                       onInputAmountChanged={this.onTokenInputChange}
                       onSelectToken={(token: ITokenObject) => this.onSelectToken(token, true)}
                     ></i-scom-token-input>
@@ -1749,6 +1764,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
                         lineHeight: 1.5,
                         opacity: 1
                       }}
+                      class={customTokenInputStyle}
                       onInputAmountChanged={this.onTokenInputChange}
                       onSelectToken={(token: ITokenObject) => this.onSelectToken(token, false)}
                     ></i-scom-token-input>
