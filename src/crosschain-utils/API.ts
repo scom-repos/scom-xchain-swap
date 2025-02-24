@@ -116,7 +116,7 @@ interface SwapData {
 function getFeeAmounts(vault: VaultStore, amountIn: BigNumber) {
   let deci = vault.assetToken.decimals;
   let weiAmountIn = amountIn.shiftedBy(deci);
-  let baseFeeAmount = new BigNumber(vault.baseFee).shiftedBy(-deci);
+  let baseFeeAmount = new BigNumber(vault.baseFee);
   let protocolFeeAmount = new BigNumber(weiAmountIn).times(vault.protocolFee).dp(0, BigNumber.ROUND_DOWN).shiftedBy(-deci);
   let transactionFeeAmount = new BigNumber(weiAmountIn).times(vault.transactionFee).dp(0, BigNumber.ROUND_DOWN).shiftedBy(-deci);
   let imbalance = new BigNumber(vault.imbalance).minus(weiAmountIn);

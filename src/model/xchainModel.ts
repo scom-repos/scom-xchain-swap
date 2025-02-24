@@ -303,7 +303,7 @@ export class XchainModel {
 
   getFeeDetails() {
     if (this.record) {
-      let feeAmounts = this.record.feeAmounts
+      let feeAmounts = this.record.feeAmounts;
       let detail = [
         {
           title: this.module.i18n.get('$base_fee'),

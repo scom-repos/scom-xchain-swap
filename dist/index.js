@@ -1123,7 +1123,7 @@ define("@scom/scom-xchain-swap/crosschain-utils/API.ts", ["require", "exports", 
     function getFeeAmounts(vault, amountIn) {
         let deci = vault.assetToken.decimals;
         let weiAmountIn = amountIn.shiftedBy(deci);
-        let baseFeeAmount = new eth_wallet_4.BigNumber(vault.baseFee).shiftedBy(-deci);
+        let baseFeeAmount = new eth_wallet_4.BigNumber(vault.baseFee);
         let protocolFeeAmount = new eth_wallet_4.BigNumber(weiAmountIn).times(vault.protocolFee).dp(0, eth_wallet_4.BigNumber.ROUND_DOWN).shiftedBy(-deci);
         let transactionFeeAmount = new eth_wallet_4.BigNumber(weiAmountIn).times(vault.transactionFee).dp(0, eth_wallet_4.BigNumber.ROUND_DOWN).shiftedBy(-deci);
         let imbalance = new eth_wallet_4.BigNumber(vault.imbalance).minus(weiAmountIn);
