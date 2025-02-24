@@ -4047,6 +4047,8 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
                     await clientWallet.switchNetwork(chainId);
                 }
                 this.modalSwitchNetwork.visible = false;
+                if (!this.xchainModel.urlParamsEnabled)
+                    return;
                 const networkList = this.state.getSiteSupportedNetworks();
                 const _targetId = Number(urlParams.get('toChainId'));
                 const tokenAddress = urlParams.get('token') || '';
@@ -4164,9 +4166,13 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
                 if (oswapIndex > 0) {
                     [lstTargetTokenMap[0], lstTargetTokenMap[oswapIndex]] = [lstTargetTokenMap[oswapIndex], lstTargetTokenMap[0]];
                 }
-                if (this.xchainModel.fromTokenSymbol && this.xchainModel.toTokenSymbol) {
-                    const firstObj = supportedTokens.find((item) => this.xchainModel.fromTokenSymbol === item.symbol || this.xchainModel.fromTokenSymbol === item.address);
-                    const secondObj = lstTargetTokenMap.find((item) => this.xchainModel.toTokenSymbol === item.symbol || this.xchainModel.toTokenSymbol === item.address);
+                const { urlParamsEnabled, fromToken, toToken, fromTokenSymbol, toTokenSymbol } = this.xchainModel;
+                const fromSymbol = urlParamsEnabled ? fromTokenSymbol : (fromTokenSymbol || fromToken?.symbol);
+                const toSymbol = urlParamsEnabled ? toTokenSymbol : (toTokenSymbol || toToken?.symbol);
+                const needToRedirectToken = urlParamsEnabled && (!fromTokenSymbol || !toTokenSymbol);
+                if (fromSymbol && toSymbol) {
+                    const firstObj = supportedTokens.find((item) => fromSymbol === item.symbol || fromSymbol === item.address);
+                    const secondObj = lstTargetTokenMap.find((item) => toSymbol === item.symbol || toSymbol === item.address);
                     this.xchainModel.fromToken = firstObj || defaultCrossChainToken;
                     this.xchainModel.toToken = (secondObj || lstTargetTokenMap[0]);
                     if (this.xchainModel.fromToken && !this.xchainModel.fromToken.chainId) {
@@ -4180,6 +4186,9 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
                     this.firstTokenInput.token = this.xchainModel.fromToken;
                     this.secondTokenInput.token = this.xchainModel.toToken;
                     this.xchainModel.fromInputValue = new eth_wallet_6.BigNumber(this.xchainModel.fromInputValue.toNumber() || defaultInput);
+                    if (needToRedirectToken) {
+                        this.xchainModel.redirectToken();
+                    }
                 }
                 else {
                     this.xchainModel.fromInputValue = new eth_wallet_6.BigNumber(defaultInput);

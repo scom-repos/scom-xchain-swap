@@ -504,6 +504,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
       await clientWallet.switchNetwork(chainId);
     }
     this.modalSwitchNetwork.visible = false;
+    if (!this.xchainModel.urlParamsEnabled) return;
     const networkList = this.state.getSiteSupportedNetworks();
     const _targetId = Number(urlParams.get('toChainId'));
     const tokenAddress = urlParams.get('token') || '';
@@ -741,9 +742,13 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
     if (oswapIndex > 0) {
       [lstTargetTokenMap[0], lstTargetTokenMap[oswapIndex]] = [lstTargetTokenMap[oswapIndex], lstTargetTokenMap[0]];
     }
-    if (this.xchainModel.fromTokenSymbol && this.xchainModel.toTokenSymbol) {
-      const firstObj = supportedTokens.find((item: ITokenObject) => this.xchainModel.fromTokenSymbol === item.symbol || this.xchainModel.fromTokenSymbol === item.address);
-      const secondObj = lstTargetTokenMap.find((item: ITokenObject) => this.xchainModel.toTokenSymbol === item.symbol || this.xchainModel.toTokenSymbol === item.address);
+    const { urlParamsEnabled, fromToken, toToken, fromTokenSymbol, toTokenSymbol } = this.xchainModel;
+    const fromSymbol = urlParamsEnabled ? fromTokenSymbol : (fromTokenSymbol || fromToken?.symbol);
+    const toSymbol = urlParamsEnabled ? toTokenSymbol : (toTokenSymbol || toToken?.symbol);
+    const needToRedirectToken = urlParamsEnabled && (!fromTokenSymbol || !toTokenSymbol);
+    if (fromSymbol && toSymbol) {
+      const firstObj = supportedTokens.find((item: ITokenObject) => fromSymbol === item.symbol || fromSymbol === item.address);
+      const secondObj = lstTargetTokenMap.find((item: ITokenObject) => toSymbol === item.symbol || toSymbol === item.address);
       this.xchainModel.fromToken = firstObj || defaultCrossChainToken;
       this.xchainModel.toToken = (secondObj || lstTargetTokenMap[0]) as ITokenObject;
       if (this.xchainModel.fromToken && !this.xchainModel.fromToken.chainId) {
@@ -757,6 +762,9 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
       this.firstTokenInput.token = this.xchainModel.fromToken;
       this.secondTokenInput.token = this.xchainModel.toToken;
       this.xchainModel.fromInputValue = new BigNumber(this.xchainModel.fromInputValue.toNumber() || defaultInput);
+      if (needToRedirectToken) {
+        this.xchainModel.redirectToken();
+      }
     } else {
       this.xchainModel.fromInputValue = new BigNumber(defaultInput);
       const { firstDefaultToken, secondDefaultToken } = this.xchainModel.calculateDefaultTokens();
