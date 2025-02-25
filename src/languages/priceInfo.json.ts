@@ -7,6 +7,7 @@ export default {
     "30_seconds": "30 seconds",
   },
   "zh-hant": {
+    "price_info": "價格資訊",
     "click_to_view_details": "點擊查看詳情",
     "transaction_fee": "交易費用",
     "estimated_time": "預計時間",

@@ -898,95 +898,30 @@ declare module "@scom/scom-xchain-swap/languages/main.json.ts" {
     };
     export default _default_2;
 }
-/// <amd-module name="@scom/scom-xchain-swap/languages/bridgeRecord.json.ts" />
-declare module "@scom/scom-xchain-swap/languages/bridgeRecord.json.ts" {
+/// <amd-module name="@scom/scom-xchain-swap/languages/expertMode.json.ts" />
+declare module "@scom/scom-xchain-swap/languages/expertMode.json.ts" {
     const _default_3: {
         en: {
-            data_last_updated_0_seconds_ago: string;
-            data_last_updated_seconds_ago: string;
-            latest_swap: string;
-            no_data: string;
-            please_connect_with_your_wallet: string;
-            oldest_swap: string;
-            destination_chain: string;
-            source_chain: string;
-            token_group: string;
-            confirming: string;
-            request_cancel: string;
-            withdraw: string;
-            "you_can_withdraw_the_tokens_after_the_cancellation_is_approved_by_the_bridge_trolls._the_cancellation_is_subjected_to_a_cancellation_fee": string;
-            the_token_will_be_returned_to_your_wallet_after_withdrawal: string;
-            "the_request_must_be_submitted_from_the_destination_chain,_please_switch_your_network_as_instructed": string;
-            "the_request_must_be_submitted_from_the_source_chain,_please_switch_your_network_as_instructed": string;
-            amend_order: string;
-            minimum_receive: string;
-            the_address_has_been_copied: string;
-            loading: string;
-            withdraw_amount: string;
-            switch_network: string;
-            token_receive: string;
-            expected_receive: string;
-            confirm: string;
-            token_swap: string;
-            from: string;
-            to: string;
-            status: string;
+            expert_mode_allows_high_slippage_trades_that_often_result_in_bad_rates_and_lost_funds: string;
+            only_use_this_mode_if_you_know_what_you_are_doing: string;
+            turn_on_expert_mode: string;
         };
-        "zh-hant": {};
+        "zh-hant": {
+            expert_mode_allows_high_slippage_trades_that_often_result_in_bad_rates_and_lost_funds: string;
+            only_use_this_mode_if_you_know_what_you_are_doing: string;
+            turn_on_expert_mode: string;
+        };
         vi: {
-            data_last_updated_0_seconds_ago: string;
-            data_last_updated_seconds_ago: string;
-            latest_swap: string;
-            no_data: string;
-            please_connect_with_your_wallet: string;
-            oldest_swap: string;
-            destination_chain: string;
-            source_chain: string;
-            token_group: string;
-            confirming: string;
-            request_cancel: string;
-            withdraw: string;
-            "you_can_withdraw_the_tokens_after_the_cancellation_is_approved_by_the_bridge_trolls._the_cancellation_is_subjected_to_a_cancellation_fee": string;
-            the_token_will_be_returned_to_your_wallet_after_withdrawal: string;
-            "the_request_must_be_submitted_from_the_destination_chain,_please_switch_your_network_as_instructed": string;
-            "the_request_must_be_submitted_from_the_source_chain,_please_switch_your_network_as_instructed": string;
-            amend_order: string;
-            minimum_receive: string;
-            the_address_has_been_copied: string;
-            loading: string;
-            withdraw_amount: string;
-            switch_network: string;
-            token_receive: string;
-            expected_receive: string;
-            confirm: string;
-            token_swap: string;
-            from: string;
-            to: string;
-            status: string;
+            expert_mode_allows_high_slippage_trades_that_often_result_in_bad_rates_and_lost_funds: string;
+            only_use_this_mode_if_you_know_what_you_are_doing: string;
+            turn_on_expert_mode: string;
         };
     };
     export default _default_3;
 }
-/// <amd-module name="@scom/scom-xchain-swap/languages/expertMode.json.ts" />
-declare module "@scom/scom-xchain-swap/languages/expertMode.json.ts" {
-    const _default_4: {
-        en: {
-            expert_mode_allows_high_slippage_trades_that_often_result_in_bad_rates_and_lost_funds: string;
-            only_use_this_mode_if_you_know_what_you_are_doing: string;
-            turn_on_expert_mode: string;
-        };
-        "zh-hant": {};
-        vi: {
-            expert_mode_allows_high_slippage_trades_that_often_result_in_bad_rates_and_lost_funds: string;
-            only_use_this_mode_if_you_know_what_you_are_doing: string;
-            turn_on_expert_mode: string;
-        };
-    };
-    export default _default_4;
-}
 /// <amd-module name="@scom/scom-xchain-swap/languages/priceInfo.json.ts" />
 declare module "@scom/scom-xchain-swap/languages/priceInfo.json.ts" {
-    const _default_5: {
+    const _default_4: {
         en: {
             price_info: string;
             click_to_view_details: string;
@@ -995,6 +930,7 @@ declare module "@scom/scom-xchain-swap/languages/priceInfo.json.ts" {
             "30_seconds": string;
         };
         "zh-hant": {
+            price_info: string;
             click_to_view_details: string;
             transaction_fee: string;
             estimated_time: string;
@@ -1008,11 +944,11 @@ declare module "@scom/scom-xchain-swap/languages/priceInfo.json.ts" {
             "30_seconds": string;
         };
     };
-    export default _default_5;
+    export default _default_4;
 }
 /// <amd-module name="@scom/scom-xchain-swap/languages/transactions.json.ts" />
 declare module "@scom/scom-xchain-swap/languages/transactions.json.ts" {
-    const _default_6: {
+    const _default_5: {
         en: {
             transaction_settings: string;
             please_enter_a_valid_transaction_deadline: string;
@@ -1028,7 +964,21 @@ declare module "@scom/scom-xchain-swap/languages/transactions.json.ts" {
             on: string;
             hours: string;
         };
-        "zh-hant": {};
+        "zh-hant": {
+            transaction_settings: string;
+            please_enter_a_valid_transaction_deadline: string;
+            please_enter_a_valid_slippage_percentage: string;
+            your_transaction_may_fail: string;
+            your_transaction_may_be_frontrun: string;
+            toggle_expert_mode: string;
+            your_transaction_will_revert_if_the_price_changes_unfavorably_by_more_than_this_percentage: string;
+            slippage_tolerance: string;
+            cross_chain_transaction_deadline: string;
+            your_transaction_will_revert_if_it_is_pending_for_more_than_this_long: string;
+            off: string;
+            on: string;
+            hours: string;
+        };
         vi: {
             transaction_settings: string;
             please_enter_a_valid_transaction_deadline: string;
@@ -1045,16 +995,15 @@ declare module "@scom/scom-xchain-swap/languages/transactions.json.ts" {
             hours: string;
         };
     };
-    export default _default_6;
+    export default _default_5;
 }
 /// <amd-module name="@scom/scom-xchain-swap/languages/index.ts" />
 declare module "@scom/scom-xchain-swap/languages/index.ts" {
     import mainJson from "@scom/scom-xchain-swap/languages/main.json.ts";
-    import bridgeRecordJson from "@scom/scom-xchain-swap/languages/bridgeRecord.json.ts";
     import expertModeJson from "@scom/scom-xchain-swap/languages/expertMode.json.ts";
     import priceInfoJson from "@scom/scom-xchain-swap/languages/priceInfo.json.ts";
     import transactionsJson from "@scom/scom-xchain-swap/languages/transactions.json.ts";
-    export { mainJson, bridgeRecordJson, expertModeJson, priceInfoJson, transactionsJson };
+    export { mainJson, expertModeJson, priceInfoJson, transactionsJson };
 }
 /// <amd-module name="@scom/scom-xchain-swap/price-info/index.tsx" />
 declare module "@scom/scom-xchain-swap/price-info/index.tsx" {
@@ -1084,8 +1033,8 @@ declare module "@scom/scom-xchain-swap/price-info/index.tsx" {
 }
 /// <amd-module name="@scom/scom-xchain-swap/expert-mode-settings/index.css.ts" />
 declare module "@scom/scom-xchain-swap/expert-mode-settings/index.css.ts" {
-    const _default_7: string;
-    export default _default_7;
+    const _default_6: string;
+    export default _default_6;
 }
 /// <amd-module name="@scom/scom-xchain-swap/expert-mode-settings/index.tsx" />
 declare module "@scom/scom-xchain-swap/expert-mode-settings/index.tsx" {
@@ -1112,8 +1061,8 @@ declare module "@scom/scom-xchain-swap/expert-mode-settings/index.tsx" {
 }
 /// <amd-module name="@scom/scom-xchain-swap/transaction-settings-layout/index.css.ts" />
 declare module "@scom/scom-xchain-swap/transaction-settings-layout/index.css.ts" {
-    const _default_8: string;
-    export default _default_8;
+    const _default_7: string;
+    export default _default_7;
 }
 /// <amd-module name="@scom/scom-xchain-swap/transaction-settings-layout/index.tsx" />
 declare module "@scom/scom-xchain-swap/transaction-settings-layout/index.tsx" {
@@ -1166,8 +1115,8 @@ declare module "@scom/scom-xchain-swap/transaction-settings-layout/index.tsx" {
 }
 /// <amd-module name="@scom/scom-xchain-swap/transaction-settings/index.css.ts" />
 declare module "@scom/scom-xchain-swap/transaction-settings/index.css.ts" {
-    const _default_9: string;
-    export default _default_9;
+    const _default_8: string;
+    export default _default_8;
 }
 /// <amd-module name="@scom/scom-xchain-swap/transaction-settings/index.tsx" />
 declare module "@scom/scom-xchain-swap/transaction-settings/index.tsx" {
@@ -1203,6 +1152,7 @@ declare module "@scom/scom-xchain-swap/index.css.ts" {
     export const contentXchainSwap: string;
     export const inputTokenContainerStyle: string;
     export const customTokenInputStyle: string;
+    export const customSecondTokenInputStyle: string;
 }
 /// <amd-module name="@scom/scom-xchain-swap/formSchema.ts" />
 declare module "@scom/scom-xchain-swap/formSchema.ts" {

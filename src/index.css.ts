@@ -99,9 +99,6 @@ export const xchainSwapStyle = Styles.style({
     '.hidden': {
       display: 'none !important'
     },
-    '.cur-pointer': {
-      cursor: 'pointer !important'
-    },
     '#gridCommonToken': {
       gridTemplateColumns: 'repeat(auto-fill, minmax(6rem, 1fr))'
     },
@@ -179,31 +176,6 @@ export const xchainSwapStyle = Styles.style({
           display: 'flex',
           alignItems: 'center',
         },
-      }
-    },
-    '#dappResult': {
-      $nest: {
-        '.modal': {
-          background: Theme.background.modal,
-          width: '440px',
-          maxWidth: '100%',
-          padding: '0.5rem',
-          borderRadius: '12px'
-        },
-        'i-label:nth-child(2)': {
-          marginBottom: '0.25rem'
-        },
-        '.waiting-txt > *': {
-          fontSize: '22px'
-        },
-        'i-loading': {
-          marginTop: '3rem',
-          marginBottom: '0.5rem'
-        },
-        'i-loading .i-loading-spinner_icon': {
-          width: '50px',
-          height: '48px'
-        }
       }
     },
     '.custom-md--view': {
@@ -433,7 +405,6 @@ export const btnDropdownStyle = Styles.style({
 
 export const contentXchainSwap = Styles.style({
   padding: '1.25rem',
-  // margin: '0.5rem auto 2rem',
   marginTop: '0.5rem',
   marginBottom: '2rem',
   background: Theme.background.modal,
@@ -451,6 +422,19 @@ export const customTokenInputStyle = Styles.style({
       whiteSpace: 'nowrap',
       overflow: 'hidden',
       textOverflow: 'ellipsis'
+    }
+  }
+})
+
+export const customSecondTokenInputStyle = Styles.style({
+  opacity: 0.6,
+  $nest: {
+    '#inputAmount input': {
+      cursor: 'default !important'
+    },
+    'i-button': {
+      cursor: 'default !important',
+      opacity: '0.8 !important'
     }
   }
 })
