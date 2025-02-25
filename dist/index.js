@@ -560,19 +560,19 @@ define("@scom/scom-xchain-swap/data.json.ts", ["require", "exports"], function (
         "defaultBuilderData": {
             "tokens": [
                 {
-                    "address": "0x29386B60e0A9A1a30e1488ADA47256577ca2C385",
-                    "chainId": 97
-                },
-                {
                     "address": "0x45eee762aaeA4e5ce317471BDa8782724972Ee19",
                     "chainId": 97
                 },
                 {
-                    "address": "0xb9C31Ea1D475c25E58a1bE1a46221db55E5A7C6e",
-                    "chainId": 43113
+                    "address": "0x29386B60e0A9A1a30e1488ADA47256577ca2C385",
+                    "chainId": 97
                 },
                 {
                     "address": "0x78d9D80E67bC80A11efbf84B7c8A65Da51a8EF3C",
+                    "chainId": 43113
+                },
+                {
+                    "address": "0xb9C31Ea1D475c25E58a1bE1a46221db55E5A7C6e",
                     "chainId": 43113
                 }
             ],
@@ -2338,7 +2338,7 @@ define("@scom/scom-xchain-swap/transaction-settings/index.tsx", ["require", "exp
 define("@scom/scom-xchain-swap/index.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_12) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.customTokenInputStyle = exports.inputTokenContainerStyle = exports.contentXchainSwap = exports.btnDropdownStyle = exports.xchainSwapContainerStyle = exports.xchainSwapStyle = void 0;
+    exports.customSecondTokenInputStyle = exports.customTokenInputStyle = exports.inputTokenContainerStyle = exports.contentXchainSwap = exports.btnDropdownStyle = exports.xchainSwapContainerStyle = exports.xchainSwapStyle = void 0;
     const Theme = components_12.Styles.Theme.ThemeVars;
     exports.xchainSwapStyle = components_12.Styles.style({
         $nest: {
@@ -2438,9 +2438,6 @@ define("@scom/scom-xchain-swap/index.css.ts", ["require", "exports", "@ijstech/c
             '.hidden': {
                 display: 'none !important'
             },
-            '.cur-pointer': {
-                cursor: 'pointer !important'
-            },
             '#gridCommonToken': {
                 gridTemplateColumns: 'repeat(auto-fill, minmax(6rem, 1fr))'
             },
@@ -2518,31 +2515,6 @@ define("@scom/scom-xchain-swap/index.css.ts", ["require", "exports", "@ijstech/c
                         display: 'flex',
                         alignItems: 'center',
                     },
-                }
-            },
-            '#dappResult': {
-                $nest: {
-                    '.modal': {
-                        background: Theme.background.modal,
-                        width: '440px',
-                        maxWidth: '100%',
-                        padding: '0.5rem',
-                        borderRadius: '12px'
-                    },
-                    'i-label:nth-child(2)': {
-                        marginBottom: '0.25rem'
-                    },
-                    '.waiting-txt > *': {
-                        fontSize: '22px'
-                    },
-                    'i-loading': {
-                        marginTop: '3rem',
-                        marginBottom: '0.5rem'
-                    },
-                    'i-loading .i-loading-spinner_icon': {
-                        width: '50px',
-                        height: '48px'
-                    }
                 }
             },
             '.custom-md--view': {
@@ -2769,7 +2741,6 @@ define("@scom/scom-xchain-swap/index.css.ts", ["require", "exports", "@ijstech/c
     });
     exports.contentXchainSwap = components_12.Styles.style({
         padding: '1.25rem',
-        // margin: '0.5rem auto 2rem',
         marginTop: '0.5rem',
         marginBottom: '2rem',
         background: Theme.background.modal,
@@ -2785,6 +2756,18 @@ define("@scom/scom-xchain-swap/index.css.ts", ["require", "exports", "@ijstech/c
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis'
+            }
+        }
+    });
+    exports.customSecondTokenInputStyle = components_12.Styles.style({
+        opacity: 0.6,
+        $nest: {
+            '#inputAmount input': {
+                cursor: 'default !important'
+            },
+            'i-button': {
+                cursor: 'default !important',
+                opacity: '0.8 !important'
             }
         }
     });
@@ -4098,7 +4081,7 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
                     }, 1000);
                     this.lastUpdated = 0;
                     if (!this.xchainModel.record)
-                        this.swapBtn.classList.add('hidden');
+                        this.swapBtn.visible = false;
                     await this.onRenderPriceInfo();
                     this.xchainModel.redirectToken();
                     await this.handleAddRoute();
@@ -4108,7 +4091,7 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
                 this.xchainModel.chainId = this.state.getChainId();
                 scom_token_list_5.tokenStore.updateTokenMapData(this.chainId);
                 if (this.chainId != null && this.chainId != undefined)
-                    this.swapBtn.classList.remove('hidden');
+                    this.swapBtn.visible = true;
                 this.initializeWidgetConfig();
                 this.swapButtonText = this.getSwapButtonText();
             };
@@ -4869,15 +4852,31 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
                 const vaults = vaultGroups.map(v => v.vaults);
                 const vault = vaults.find(v => v[chainId]?.assetToken.address.toLowerCase() === token.address.toLowerCase());
                 const targetVault = vault ? vault[targetChainId] : null;
-                if (targetVault && targetVault.assetToken.address.toLowerCase() !== targetToken.address.toLowerCase()) {
-                    let listTargetTokenMap = Object.values(isFrom ? targetTokenMap : scom_token_list_5.tokenStore.getTokenMapByChainId(targetChainId));
-                    const token = listTargetTokenMap.find(v => v.address?.toLowerCase() === targetVault.assetToken.address.toLowerCase());
-                    const tokenSelection = isFrom ? this.secondTokenInput : this.firstTokenInput;
-                    if (token && !token.chainId) {
-                        token.chainId = targetChainId;
+                let listTargetTokenMap = Object.values(isFrom ? targetTokenMap : scom_token_list_5.tokenStore.getTokenMapByChainId(targetChainId));
+                if (isFrom && !targetVault && token) {
+                    let _targetToken;
+                    if (token.symbol.includes('USDT')) {
+                        _targetToken = listTargetTokenMap.find(v => v.symbol.includes('USDT'));
                     }
-                    tokenSelection.token = token;
-                    this.onUpdateToken(token, !isFrom);
+                    else {
+                        _targetToken = listTargetTokenMap.find(v => v.symbol === token.symbol);
+                    }
+                    if (_targetToken && !_targetToken.chainId) {
+                        _targetToken.chainId = targetChainId;
+                    }
+                    if (_targetToken) {
+                        this.secondTokenInput.token = _targetToken;
+                        this.onUpdateToken(_targetToken, false);
+                    }
+                }
+                else if (targetVault && targetVault.assetToken.address.toLowerCase() !== targetToken.address.toLowerCase()) {
+                    const _token = listTargetTokenMap.find(v => v.address?.toLowerCase() === targetVault.assetToken.address.toLowerCase());
+                    const tokenSelection = isFrom ? this.secondTokenInput : this.firstTokenInput;
+                    if (_token && !_token.chainId) {
+                        _token.chainId = targetChainId;
+                    }
+                    tokenSelection.token = _token;
+                    this.onUpdateToken(_token, !isFrom);
                 }
                 this.isVaultEmpty = !targetVault;
             }
@@ -4998,7 +4997,7 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
                     this.secondTokenInput.classList.add('cursor-input--default');
                 }
             }
-            this.swapBtn.classList.remove('hidden');
+            this.swapBtn.visible = !!item;
             this.xchainModel.record = item;
             if (this.xchainModel.fromToken && !this.xchainModel.fromToken.isNative && (0, index_17.isWalletConnected)() && item) {
                 try {
@@ -5081,7 +5080,7 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
         initRoutes() {
             this.xchainModel.record = null;
             this.isPriceToggled = false;
-            this.swapBtn.classList.add('hidden');
+            this.swapBtn.visible = false;
         }
         async handleAddRoute() {
             if (!this.xchainModel.fromToken || !this.xchainModel.toToken || !(this.xchainModel.fromInputValue.gt(0) || this.xchainModel.toInputValue.gt(0)))
@@ -5383,16 +5382,16 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
                                         this.$render("i-vstack", { class: "text-right", width: "100%" },
                                             this.$render("i-label", { id: "receiveBalance", class: "text--grey ml-auto", caption: "$balance:_0" }))),
                                     this.$render("i-panel", { id: "xchainReceiveCol", background: { color: Theme.input.background }, width: "100%", margin: { top: 'auto' }, border: { radius: '1rem', width: '1px', style: 'solid', color: Theme.background.main } },
-                                        this.$render("i-scom-token-input", { id: "secondTokenInput", value: '-', placeholder: '0.0', inputReadOnly: true, tokenReadOnly: false, isBalanceShown: false, isBtnMaxShown: false, isCommonShown: true, background: { color: Theme.input.background }, border: { radius: '1rem' }, height: 'auto', width: '100%', display: 'flex', font: { size: '1.25rem' }, padding: { left: '0.75rem', right: '0.75rem' }, tokenButtonStyles: {
+                                        this.$render("i-scom-token-input", { id: "secondTokenInput", value: '-', placeholder: '0.0', inputReadOnly: true, tokenReadOnly: true, isBalanceShown: false, isBtnMaxShown: false, isCommonShown: true, background: { color: Theme.input.background }, border: { radius: '1rem' }, height: 'auto', width: '100%', display: 'flex', font: { size: '1.25rem' }, padding: { left: '0.75rem', right: '0.75rem' }, tokenButtonStyles: {
                                                 background: { color: Theme.background.main },
                                                 padding: { top: '0.5rem', bottom: '0.5rem', left: '0.5rem', right: '0.5rem' },
                                                 border: { radius: 8 },
                                                 font: { size: '1rem', weight: 700, color: Theme.input.fontColor },
                                                 lineHeight: 1.5,
                                                 opacity: 1
-                                            }, class: index_css_4.customTokenInputStyle, onInputAmountChanged: this.onTokenInputChange, onSelectToken: (token) => this.onSelectToken(token, false) }))))),
+                                            }, class: `${index_css_4.customTokenInputStyle} ${index_css_4.customSecondTokenInputStyle}`, onInputAmountChanged: this.onTokenInputChange, onSelectToken: (token) => this.onSelectToken(token, false) }))))),
                         this.$render("i-panel", { class: "swap-btn-container", width: "100%" },
-                            this.$render("i-button", { id: "swapBtn", class: "btn-swap btn-os hidden", height: 67, caption: this.swapButtonText, rightIcon: { spin: true, visible: false }, onClick: this.onClickSwapButton.bind(this) }))),
+                            this.$render("i-button", { id: "swapBtn", class: "btn-swap btn-os", height: 67, caption: this.swapButtonText, visible: false, rightIcon: { spin: true, visible: false }, onClick: this.onClickSwapButton.bind(this) }))),
                     this.$render("i-modal", { id: "swapModal", class: "custom-modal", title: "$confirm_swap", closeIcon: { name: 'times' } },
                         this.$render("i-hstack", { verticalAlignment: "center", horizontalAlignment: "start", wrap: "wrap", gap: "0.25rem" },
                             this.$render("i-panel", { id: "srcChainFirstPanel", class: "row-chain" },

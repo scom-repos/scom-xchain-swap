@@ -52,7 +52,7 @@ import { tokenStore, assets as tokenAssets, ITokenObject } from '@scom/scom-toke
 import ScomWalletModal, { IWalletPlugin } from '@scom/scom-wallet-modal';
 import { XchainSwapExpertModeSettings } from './expert-mode-settings/index';
 import { XchainSwapTransactionSettings } from './transaction-settings/index';
-import { btnDropdownStyle, contentXchainSwap, customTokenInputStyle, inputTokenContainerStyle, xchainSwapContainerStyle, xchainSwapStyle } from './index.css';
+import { btnDropdownStyle, contentXchainSwap, customSecondTokenInputStyle, customTokenInputStyle, inputTokenContainerStyle, xchainSwapContainerStyle, xchainSwapStyle } from './index.css';
 import configData from './data.json';
 import { Block, BlockNoteEditor, BlockNoteSpecs, callbackFnType, executeFnType, getWidgetEmbedUrl, parseUrl } from '@scom/scom-blocknote-sdk';
 import { mainJson } from './languages/index';
@@ -668,7 +668,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
       }, 1000)
       this.lastUpdated = 0;
       if (!this.xchainModel.record)
-        this.swapBtn.classList.add('hidden');
+        this.swapBtn.visible = false;
       await this.onRenderPriceInfo();
       this.xchainModel.redirectToken();
       await this.handleAddRoute();
@@ -679,7 +679,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
     this.xchainModel.chainId = this.state.getChainId();
     tokenStore.updateTokenMapData(this.chainId);
     if (this.chainId != null && this.chainId != undefined)
-      this.swapBtn.classList.remove('hidden');
+      this.swapBtn.visible = true;
     this.initializeWidgetConfig();
     this.swapButtonText = this.getSwapButtonText()
   }
@@ -791,15 +791,29 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
       const vaults = vaultGroups.map(v => v.vaults);
       const vault = vaults.find(v => v[chainId]?.assetToken.address.toLowerCase() === token.address.toLowerCase());
       const targetVault = vault ? vault[targetChainId] : null;
-      if (targetVault && targetVault.assetToken.address.toLowerCase() !== targetToken.address.toLowerCase()) {
-        let listTargetTokenMap = Object.values(isFrom ? targetTokenMap : tokenStore.getTokenMapByChainId(targetChainId));
-        const token = listTargetTokenMap.find(v => v.address?.toLowerCase() === targetVault.assetToken.address.toLowerCase());
-        const tokenSelection = isFrom ? this.secondTokenInput : this.firstTokenInput;
-        if (token && !token.chainId) {
-          token.chainId = targetChainId;
+      let listTargetTokenMap = Object.values(isFrom ? targetTokenMap : tokenStore.getTokenMapByChainId(targetChainId));
+      if (isFrom && !targetVault && token) {
+        let _targetToken: ITokenObject;
+        if (token.symbol.includes('USDT')) {
+          _targetToken = listTargetTokenMap.find(v => v.symbol.includes('USDT'));
+        } else {
+          _targetToken = listTargetTokenMap.find(v => v.symbol === token.symbol);
         }
-        tokenSelection.token = token;
-        this.onUpdateToken(token, !isFrom);
+        if (_targetToken && !_targetToken.chainId) {
+          _targetToken.chainId = targetChainId;
+        }
+        if (_targetToken) {
+          this.secondTokenInput.token = _targetToken;
+          this.onUpdateToken(_targetToken, false);
+        }
+      } else if (targetVault && targetVault.assetToken.address.toLowerCase() !== targetToken.address.toLowerCase()) {
+        const _token = listTargetTokenMap.find(v => v.address?.toLowerCase() === targetVault.assetToken.address.toLowerCase());
+        const tokenSelection = isFrom ? this.secondTokenInput : this.firstTokenInput;
+        if (_token && !_token.chainId) {
+          _token.chainId = targetChainId;
+        }
+        tokenSelection.token = _token;
+        this.onUpdateToken(_token, !isFrom);
       }
       this.isVaultEmpty = !targetVault;
     } else {
@@ -931,7 +945,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
       }
     }
 
-    this.swapBtn.classList.remove('hidden');
+    this.swapBtn.visible = !!item;
     this.xchainModel.record = item;
     if (this.xchainModel.fromToken && !this.xchainModel.fromToken.isNative && isWalletConnected() && item) {
       try {
@@ -1013,7 +1027,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
   private initRoutes() {
     this.xchainModel.record = null;
     this.isPriceToggled = false;
-    this.swapBtn.classList.add('hidden');
+    this.swapBtn.visible = false;
   }
 
   private async handleAddRoute() {
@@ -1747,7 +1761,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
                       value='-'
                       placeholder='0.0'
                       inputReadOnly={true}
-                      tokenReadOnly={false}
+                      tokenReadOnly={true}
                       isBalanceShown={false}
                       isBtnMaxShown={false}
                       isCommonShown={true}
@@ -1765,7 +1779,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
                         lineHeight: 1.5,
                         opacity: 1
                       }}
-                      class={customTokenInputStyle}
+                      class={`${customTokenInputStyle} ${customSecondTokenInputStyle}`}
                       onInputAmountChanged={this.onTokenInputChange}
                       onSelectToken={(token: ITokenObject) => this.onSelectToken(token, false)}
                     ></i-scom-token-input>
@@ -1775,7 +1789,11 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
             </i-panel>
             <i-panel class="swap-btn-container" width="100%">
               <i-button
-                id="swapBtn" class="btn-swap btn-os hidden" height={67} caption={this.swapButtonText}
+                id="swapBtn"
+                class="btn-swap btn-os"
+                height={67}
+                caption={this.swapButtonText}
+                visible={false}
                 rightIcon={{ spin: true, visible: false }}
                 onClick={this.onClickSwapButton.bind(this)}
               ></i-button>

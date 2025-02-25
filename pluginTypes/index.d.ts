@@ -1152,6 +1152,7 @@ declare module "@scom/scom-xchain-swap/index.css.ts" {
     export const contentXchainSwap: string;
     export const inputTokenContainerStyle: string;
     export const customTokenInputStyle: string;
+    export const customSecondTokenInputStyle: string;
 }
 /// <amd-module name="@scom/scom-xchain-swap/formSchema.ts" />
 declare module "@scom/scom-xchain-swap/formSchema.ts" {
