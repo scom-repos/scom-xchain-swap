@@ -731,11 +731,11 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
   private setDefaultToken = () => {
     const { desChain, targetChainId: mTargetChainId, targetTokenMap } = this.xchainModel;
     let lstTokenMap = Object.values(tokenStore.getTokenMapByChainId(this.chainId));
-    const supportedTokens = DefaultERC20Tokens[this.chainId] || [];
+    const supportedTokens = this.xchainModel.getSupportedTokens(this.configModel.tokens, this.chainId) || [];
     lstTokenMap = lstTokenMap.filter(v => supportedTokens.some(token => token.address?.toLowerCase() === v.address?.toLowerCase()));
     const defaultCrossChainToken = lstTokenMap.find((v) => v.address);
     const targetChainId = desChain?.chainId || mTargetChainId || this.state.getChainId();
-    const supportedTargetTokens = DefaultERC20Tokens[targetChainId] || [];
+    const supportedTargetTokens = this.xchainModel.getSupportedTokens(this.configModel.tokens, targetChainId) || [];
     let lstTargetTokenMap = Object.values(targetTokenMap);
     lstTargetTokenMap = lstTargetTokenMap.filter((v: ITokenObject) => supportedTargetTokens.some(token => token.address?.toLowerCase() === v.address?.toLowerCase()));
     const oswapIndex = lstTargetTokenMap.findIndex((item: ITokenObject) => item.symbol === 'OSWAP');
@@ -1177,7 +1177,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
     if (this.xchainModel.isInsufficientBalance) {
       return this.i18n.get('$insufficient_balance', { symbol: this.xchainModel.fromToken?.symbol });
     }
-    if (this.xchainModel.record.toAmount.lte(0)) {
+    if (this.xchainModel.record?.toAmount.lte(0)) {
       return this.i18n.get('$amount_lower_than_base_fee');
     }
     return this.i18n.get('$create_order');

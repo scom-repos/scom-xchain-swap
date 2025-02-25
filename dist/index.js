@@ -1512,76 +1512,6 @@ define("@scom/scom-xchain-swap/languages/main.json.ts", ["require", "exports"], 
         }
     };
 });
-define("@scom/scom-xchain-swap/languages/bridgeRecord.json.ts", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    ///<amd-module name='@scom/scom-xchain-swap/languages/bridgeRecord.json.ts'/> 
-    exports.default = {
-        "en": {
-            "data_last_updated_0_seconds_ago": "Data last updated 0 seconds ago",
-            "data_last_updated_seconds_ago": "Data last updated {{value}} seconds ago",
-            "latest_swap": "Latest Swap",
-            "no_data": "No Data",
-            "please_connect_with_your_wallet": "Please connect with your wallet",
-            "oldest_swap": "Oldest Swap",
-            "destination_chain": "Destination Chain",
-            "source_chain": "Source Chain",
-            "token_group": "Token Group",
-            "confirming": "Confirming",
-            "request_cancel": "Request Cancel",
-            "withdraw": "Withdraw",
-            "you_can_withdraw_the_tokens_after_the_cancellation_is_approved_by_the_bridge_trolls._the_cancellation_is_subjected_to_a_cancellation_fee": "You can withdraw the tokens after the cancellation is approved by the bridge trolls. The cancellation is subjected to a <span class=\"highlight-text\">{{fee}}%</span> cancellation fee.",
-            "the_token_will_be_returned_to_your_wallet_after_withdrawal": "The token will be returned to your wallet after withdrawal.",
-            "the_request_must_be_submitted_from_the_destination_chain,_please_switch_your_network_as_instructed": "The request must be submitted from the destination chain, please switch your network as instructed.",
-            "the_request_must_be_submitted_from_the_source_chain,_please_switch_your_network_as_instructed": "The request must be submitted from the source chain, please switch your network as instructed.",
-            "amend_order": "Amend Order",
-            "minimum_receive": "Minimum Receive",
-            "the_address_has_been_copied": "The address has been copied",
-            "loading": "Loading...",
-            "withdraw_amount": "Withdraw Amount",
-            "switch_network": "Switch Network",
-            "token_receive": "Token Receive",
-            "expected_receive": "Expected Receive",
-            "confirm": "Confirm",
-            "token_swap": "Token Swap",
-            "from": "From",
-            "to": "To",
-            "status": "Status"
-        },
-        "zh-hant": {},
-        "vi": {
-            "data_last_updated_0_seconds_ago": "Dữ liệu được cập nhật lần cuối cách đây 0 giây",
-            "data_last_updated_seconds_ago": "Dữ liệu được cập nhật lần cuối cách đây {{value}} giây",
-            "latest_swap": "Hoán đổi mới nhất",
-            "no_data": "Không có dữ liệu",
-            "please_connect_with_your_wallet": "Vui lòng kết nối với ví của bạn",
-            "oldest_swap": "Hoán đổi cũ nhất",
-            "destination_chain": "Chuỗi đích",
-            "source_chain": "Chuỗi nguồn",
-            "token_group": "Nhóm token",
-            "confirming": "Đang xác nhận",
-            "request_cancel": "Yêu cầu hủy",
-            "withdraw": "Rút tiền",
-            "you_can_withdraw_the_tokens_after_the_cancellation_is_approved_by_the_bridge_trolls._the_cancellation_is_subjected_to_a_cancellation_fee": "Bạn có thể rút token sau khi việc hủy được duyệt bởi các bridge troll. Việc hủy sẽ phải chịu một khoản phí hủy là <span class=\"highlight-text\">{{fee}}%</span>.",
-            "the_token_will_be_returned_to_your_wallet_after_withdrawal": "Token sẽ được trả lại ví của bạn sau khi rút tiền.",
-            "the_request_must_be_submitted_from_the_destination_chain,_please_switch_your_network_as_instructed": "Yêu cầu phải được gửi từ chuỗi đích, vui lòng chuyển mạng của bạn theo hướng dẫn.",
-            "the_request_must_be_submitted_from_the_source_chain,_please_switch_your_network_as_instructed": "Yêu cầu phải được gửi từ chuỗi nguồn, vui lòng chuyển mạng của bạn theo hướng dẫn.",
-            "amend_order": "Sửa đổi lệnh",
-            "minimum_receive": "Nhận tối thiểu",
-            "the_address_has_been_copied": "Địa chỉ đã được sao chép",
-            "loading": "Đang tải...",
-            "withdraw_amount": "Số tiền rút",
-            "switch_network": "Chuyển mạng",
-            "token_receive": "Token nhận được",
-            "expected_receive": "Dự kiến nhận",
-            "confirm": "Xác nhận",
-            "token_swap": "Hoán đổi Token",
-            "from": "Từ",
-            "to": "Đến",
-            "status": "Trạng thái",
-        }
-    };
-});
 define("@scom/scom-xchain-swap/languages/expertMode.json.ts", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -1592,7 +1522,11 @@ define("@scom/scom-xchain-swap/languages/expertMode.json.ts", ["require", "expor
             "only_use_this_mode_if_you_know_what_you_are_doing": "Only use this mode if you know what you are doing.",
             "turn_on_expert_mode": "Turn On Expert Mode"
         },
-        "zh-hant": {},
+        "zh-hant": {
+            "expert_mode_allows_high_slippage_trades_that_often_result_in_bad_rates_and_lost_funds": "專家模式允許高滑點交易，這些交易通常會導致不良匯率和資金損失。",
+            "only_use_this_mode_if_you_know_what_you_are_doing": "只有在您知道自己在做什麼的情況下才使用此模式。",
+            "turn_on_expert_mode": "開啟專家模式"
+        },
         "vi": {
             "expert_mode_allows_high_slippage_trades_that_often_result_in_bad_rates_and_lost_funds": "Chế độ chuyên gia cho phép giao dịch với độ trượt giá cao, thường dẫn đến tỷ giá không tốt và mất tiền.",
             "only_use_this_mode_if_you_know_what_you_are_doing": "Chỉ sử dụng chế độ này nếu bạn biết rõ mình đang làm gì.",
@@ -1613,6 +1547,7 @@ define("@scom/scom-xchain-swap/languages/priceInfo.json.ts", ["require", "export
             "30_seconds": "30 seconds",
         },
         "zh-hant": {
+            "price_info": "價格資訊",
             "click_to_view_details": "點擊查看詳情",
             "transaction_fee": "交易費用",
             "estimated_time": "預計時間",
@@ -1647,7 +1582,21 @@ define("@scom/scom-xchain-swap/languages/transactions.json.ts", ["require", "exp
             "on": "On",
             "hours": "hours"
         },
-        "zh-hant": {},
+        "zh-hant": {
+            "transaction_settings": "交易設定",
+            "please_enter_a_valid_transaction_deadline": "請輸入有效的交易期限",
+            "please_enter_a_valid_slippage_percentage": "請輸入有效的滑點百分比",
+            "your_transaction_may_fail": "您的交易可能會失敗",
+            "your_transaction_may_be_frontrun": "您的交易可能會被前置交易",
+            "toggle_expert_mode": "切換專家模式",
+            "your_transaction_will_revert_if_the_price_changes_unfavorably_by_more_than_this_percentage": "如果價格不利變動超過此百分比，您的交易將會回滾。",
+            "slippage_tolerance": "滑點容忍度",
+            "cross_chain_transaction_deadline": "跨鏈交易期限",
+            "your_transaction_will_revert_if_it_is_pending_for_more_than_this_long": "如果您的交易待處理超過此時間，將會回滾。",
+            "off": "關閉",
+            "on": "開啟",
+            "hours": "小時"
+        },
         "vi": {
             "transaction_settings": "Cài đặt giao dịch",
             "please_enter_a_valid_transaction_deadline": "Vui lòng nhập thời hạn giao dịch hợp lệ",
@@ -1665,12 +1614,11 @@ define("@scom/scom-xchain-swap/languages/transactions.json.ts", ["require", "exp
         }
     };
 });
-define("@scom/scom-xchain-swap/languages/index.ts", ["require", "exports", "@scom/scom-xchain-swap/languages/main.json.ts", "@scom/scom-xchain-swap/languages/bridgeRecord.json.ts", "@scom/scom-xchain-swap/languages/expertMode.json.ts", "@scom/scom-xchain-swap/languages/priceInfo.json.ts", "@scom/scom-xchain-swap/languages/transactions.json.ts"], function (require, exports, main_json_1, bridgeRecord_json_1, expertMode_json_1, priceInfo_json_1, transactions_json_1) {
+define("@scom/scom-xchain-swap/languages/index.ts", ["require", "exports", "@scom/scom-xchain-swap/languages/main.json.ts", "@scom/scom-xchain-swap/languages/expertMode.json.ts", "@scom/scom-xchain-swap/languages/priceInfo.json.ts", "@scom/scom-xchain-swap/languages/transactions.json.ts"], function (require, exports, main_json_1, expertMode_json_1, priceInfo_json_1, transactions_json_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.transactionsJson = exports.priceInfoJson = exports.expertModeJson = exports.bridgeRecordJson = exports.mainJson = void 0;
+    exports.transactionsJson = exports.priceInfoJson = exports.expertModeJson = exports.mainJson = void 0;
     exports.mainJson = main_json_1.default;
-    exports.bridgeRecordJson = bridgeRecord_json_1.default;
     exports.expertModeJson = expertMode_json_1.default;
     exports.priceInfoJson = priceInfo_json_1.default;
     exports.transactionsJson = transactions_json_1.default;
@@ -4167,11 +4115,11 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
             this.setDefaultToken = () => {
                 const { desChain, targetChainId: mTargetChainId, targetTokenMap } = this.xchainModel;
                 let lstTokenMap = Object.values(scom_token_list_5.tokenStore.getTokenMapByChainId(this.chainId));
-                const supportedTokens = index_17.DefaultERC20Tokens[this.chainId] || [];
+                const supportedTokens = this.xchainModel.getSupportedTokens(this.configModel.tokens, this.chainId) || [];
                 lstTokenMap = lstTokenMap.filter(v => supportedTokens.some(token => token.address?.toLowerCase() === v.address?.toLowerCase()));
                 const defaultCrossChainToken = lstTokenMap.find((v) => v.address);
                 const targetChainId = desChain?.chainId || mTargetChainId || this.state.getChainId();
-                const supportedTargetTokens = index_17.DefaultERC20Tokens[targetChainId] || [];
+                const supportedTargetTokens = this.xchainModel.getSupportedTokens(this.configModel.tokens, targetChainId) || [];
                 let lstTargetTokenMap = Object.values(targetTokenMap);
                 lstTargetTokenMap = lstTargetTokenMap.filter((v) => supportedTargetTokens.some(token => token.address?.toLowerCase() === v.address?.toLowerCase()));
                 const oswapIndex = lstTargetTokenMap.findIndex((item) => item.symbol === 'OSWAP');
@@ -5297,7 +5245,7 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
             if (this.xchainModel.isInsufficientBalance) {
                 return this.i18n.get('$insufficient_balance', { symbol: this.xchainModel.fromToken?.symbol });
             }
-            if (this.xchainModel.record.toAmount.lte(0)) {
+            if (this.xchainModel.record?.toAmount.lte(0)) {
                 return this.i18n.get('$amount_lower_than_base_fee');
             }
             return this.i18n.get('$create_order');
