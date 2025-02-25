@@ -4239,6 +4239,7 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
             };
             this.onRefresh = async (source) => {
                 source.enabled = false;
+                await this.updateBalances();
                 await this.handleAddRoute();
                 source.enabled = true;
             };

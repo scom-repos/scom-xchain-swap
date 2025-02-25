@@ -1328,6 +1328,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
 
   private onRefresh = async (source: Control) => {
     source.enabled = false;
+    await this.updateBalances();
     await this.handleAddRoute();
     source.enabled = true;
   }
