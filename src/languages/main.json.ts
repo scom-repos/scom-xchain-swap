@@ -61,6 +61,7 @@ export default {
     "tokens": "Tokens",
     "address": "Address",
     "general": "General",
+    "the_target_chain_cannot_be_the_same_as_the_source_chain": "The target chain cannot be the same as the source chain",
   },
   "zh-hant": {
     "last_updated_(s)_ago": "上次更新 {{value}} 秒前",
@@ -125,6 +126,7 @@ export default {
     "tokens": "代幣",
     "address": "地址",
     "general": "一般",
+    "the_target_chain_cannot_be_the_same_as_the_source_chain": "目標鏈不能與源鏈相同",
   },
   "vi": {
     "last_updated_(s)_ago": "Lần cập nhật cuối cách đây {{value}}(giây)",
@@ -189,5 +191,6 @@ export default {
     "tokens": "Mã Token",
     "address": "Địa Chỉ",
     "general": "Cơ Bản",
+    "the_target_chain_cannot_be_the_same_as_the_source_chain": "Chuỗi mục tiêu không thể giống với chuỗi nguồn",
   }
 }

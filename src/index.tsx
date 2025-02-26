@@ -1518,7 +1518,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
       this.listElmDesChain.appendChild(hStack);
       if (network.chainId === this.chainId) {
         hStack.classList.add('disabled');
-        hStack.tooltip.content = '$the_target_chain_cannot_be_the_same_as_the_source_chain';
+        hStack.tooltip.content = this.i18n.get('$the_target_chain_cannot_be_the_same_as_the_source_chain');
       } else {
         hStack.onClick = () => this.onSelectDestinationChain(network);
       }
@@ -1526,7 +1526,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
       if (!this.isMetaMask && isWalletConnected()) {
         hStack.tooltip.content = this.i18n.get('$xchain_dapp_supports_this_network_please_switch_network_in_the_connected_wallet', {
           chainName,
-          chainId: `${chainId} `
+          chainId: `${chainId}`
         });
         hStack.style.cursor = 'default';
       }

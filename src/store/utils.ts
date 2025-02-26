@@ -1,24 +1,10 @@
 import { application } from '@ijstech/components';
 import { BigNumber, ERC20ApprovalModel, IERC20ApprovalEventOptions, INetwork, Wallet } from '@ijstech/eth-wallet';
-import { EventId, IExtendedNetwork, TokenMapType } from '../global/index';
-import { ChainNativeTokenByChainId, CoreContractStore } from './data/index';
+import { EventId, IExtendedNetwork } from '../global/index';
 import { VaultConstant, Mainnets, Testnets, VaultGroupConstant, VaultType, TokenConstant, VaultGroupList, orderMinOutRate } from './data/core';
 import { INetworkConfig } from '@scom/scom-network-picker';
-import { ITokenObject } from '@scom/scom-token-list';
 import getNetworkList from '@scom/scom-network-list';
 import ConfigData from '../data.json';
-
-export interface IWalletConnectMetadata {
-  name: string;
-  description: string;
-  url: string;
-  icons: string[];
-}
-
-export interface IWalletConnectConfig {
-  projectId: string;
-  metadata: IWalletConnectMetadata;
-}
 
 export enum WalletPlugin {
   MetaMask = 'metamask',
@@ -375,34 +361,9 @@ function matchFilter<O extends { [keys: string]: any }>(list: O[], filter: Parti
   }));
 }
 
-export const getTokensDataList = async (tokenMapData: TokenMapType, tokenBalances: any): Promise<any[]> => {
-  let dataList: any[] = [];
-  for (let i = 0; i < Object.keys(tokenMapData).length; i++) {
-    let tokenAddress = Object.keys(tokenMapData)[i];
-    let tokenObject = tokenMapData[tokenAddress];
-    if (tokenBalances) {
-      dataList.push({
-        ...tokenObject,
-        status: false,
-        value: tokenBalances[tokenAddress] ? tokenBalances[tokenAddress] : 0,
-      });
-    } else {
-      dataList.push({
-        ...tokenObject,
-        status: null,
-      })
-    }
-  }
-  return dataList;
-}
-
 // wallet
 export function getWalletProvider() {
-  return localStorage.getItem('walletProvider') || '';
-}
-
-export function isMetaMask() {
-  return getWalletProvider() === WalletPlugin.MetaMask;
+  return localStorage.getItem('walletProvider') || WalletPlugin.MetaMask;
 }
 
 export function isWalletConnected() {
@@ -416,28 +377,4 @@ export async function switchNetwork(chainId: number) {
   if (!isWalletConnected()) {
     application.EventBus.dispatch(EventId.chainChanged, chainId);
   }
-}
-
-export const truncateAddress = (address: string) => {
-  if (address === undefined || address === null) return '';
-  return address.substr(0, 6) + '...' + address.substr(-4);
-}
-
-export function getAddresses(chainId: number) {
-  return CoreContractStore[chainId];
-};
-
-export const getChainNativeToken = (chainId: number): ITokenObject => {
-  return ChainNativeTokenByChainId[chainId];
-};
-
-export const getGovToken = (chainId: number): ITokenObject => {
-  let govToken: ITokenObject;
-  let Address = getAddresses(chainId);
-  if (chainId == 43113 || chainId == 43114) {
-    govToken = { address: Address.GOV_TOKEN, decimals: 18, symbol: "veOSWAP", name: 'Vote-escrowed OSWAP' };
-  } else {
-    govToken = { address: Address.GOV_TOKEN, decimals: 18, symbol: "OSWAP", name: 'OpenSwap' };
-  }
-  return govToken;
 }

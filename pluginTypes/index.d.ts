@@ -67,38 +67,15 @@ declare module "@scom/scom-xchain-swap/store/data/tokens/index.ts" {
     const ChainNativeTokenByChainId: {
         [chainId: number]: ITokenObject;
     };
-    const getOpenSwapToken: (chainId: number) => ITokenObject;
-    const DefaultTokens: {
-        [chainId: number]: ITokenObject[];
-    };
-    const ToUSDPriceFeedAddressesMap: {
-        [chainId: number]: {
-            [token: string]: string;
-        };
-    };
-    const tokenPriceAMMReference: {
-        [chainId: number]: {
-            [token: string]: string;
-        };
-    };
-    const getTokenIconPath: (tokenObj: any, chainId?: number) => string;
-    export { DefaultERC20Tokens, ChainNativeTokenByChainId, DefaultTokens, ToUSDPriceFeedAddressesMap, tokenPriceAMMReference, getTokenIconPath, getOpenSwapToken, };
+    export { DefaultERC20Tokens, ChainNativeTokenByChainId, };
 }
 /// <amd-module name="@scom/scom-xchain-swap/store/data/core.ts" />
 declare module "@scom/scom-xchain-swap/store/data/core.ts" {
-    import { BigNumber } from "@ijstech/eth-wallet";
     export interface TokenConstant {
         address: string;
         name: string;
         decimals: number;
         symbol: string;
-    }
-    export interface TokenStore {
-        address: string;
-        name: string;
-        decimals: number;
-        symbol: string;
-        userBalance: BigNumber;
     }
     export interface ContractSet {
         WETH9: string;
@@ -110,16 +87,6 @@ declare module "@scom/scom-xchain-swap/store/data/core.ts" {
     export const Testnets: number[];
     export const CoreContractStore: {
         [chainId: number]: ContractSet;
-    };
-    export const crossChainNativeTokenList: {
-        [chainId: number]: {
-            address: string;
-            decimals: number;
-            symbol: string;
-            name: string;
-            isNative: boolean;
-            wethAddress: string;
-        };
     };
     export const orderMinOutRate = "0.005";
     export enum VaultType {
@@ -150,7 +117,7 @@ declare module "@scom/scom-xchain-swap/store/data/core.ts" {
 }
 /// <amd-module name="@scom/scom-xchain-swap/store/data/index.ts" />
 declare module "@scom/scom-xchain-swap/store/data/index.ts" {
-    export { DefaultERC20Tokens, ChainNativeTokenByChainId, DefaultTokens, ToUSDPriceFeedAddressesMap, tokenPriceAMMReference, getTokenIconPath, getOpenSwapToken, } from "@scom/scom-xchain-swap/store/data/tokens/index.ts";
+    export { DefaultERC20Tokens, ChainNativeTokenByChainId, } from "@scom/scom-xchain-swap/store/data/tokens/index.ts";
     export * from "@scom/scom-xchain-swap/store/data/core.ts";
 }
 /// <amd-module name="@scom/scom-xchain-swap/global/helper.ts" />
@@ -287,20 +254,9 @@ declare module "@scom/scom-xchain-swap/data.json.ts" {
 /// <amd-module name="@scom/scom-xchain-swap/store/utils.ts" />
 declare module "@scom/scom-xchain-swap/store/utils.ts" {
     import { BigNumber, ERC20ApprovalModel, IERC20ApprovalEventOptions } from '@ijstech/eth-wallet';
-    import { IExtendedNetwork, TokenMapType } from "@scom/scom-xchain-swap/global/index.ts";
+    import { IExtendedNetwork } from "@scom/scom-xchain-swap/global/index.ts";
     import { VaultConstant, VaultType, TokenConstant } from "@scom/scom-xchain-swap/store/data/core.ts";
     import { INetworkConfig } from '@scom/scom-network-picker';
-    import { ITokenObject } from '@scom/scom-token-list';
-    export interface IWalletConnectMetadata {
-        name: string;
-        description: string;
-        url: string;
-        icons: string[];
-    }
-    export interface IWalletConnectConfig {
-        projectId: string;
-        metadata: IWalletConnectMetadata;
-    }
     export enum WalletPlugin {
         MetaMask = "metamask",
         Coin98 = "coin98",
@@ -423,30 +379,13 @@ declare module "@scom/scom-xchain-swap/store/utils.ts" {
         isCrossChainSupported?: boolean;
         isMainChain?: boolean;
     }
-    export const getTokensDataList: (tokenMapData: TokenMapType, tokenBalances: any) => Promise<any[]>;
     export function getWalletProvider(): string;
-    export function isMetaMask(): boolean;
     export function isWalletConnected(): boolean;
     export function switchNetwork(chainId: number): Promise<void>;
-    export const truncateAddress: (address: string) => string;
-    export function getAddresses(chainId: number): import("@scom/scom-xchain-swap/store/data/core.ts").ContractSet;
-    export const getChainNativeToken: (chainId: number) => ITokenObject;
-    export const getGovToken: (chainId: number) => ITokenObject;
 }
 /// <amd-module name="@scom/scom-xchain-swap/store/index.ts" />
 declare module "@scom/scom-xchain-swap/store/index.ts" {
-    import { VaultConstant, VaultGroupConstant } from "@scom/scom-xchain-swap/store/data/index.ts";
     export * from "@scom/scom-xchain-swap/store/data/index.ts";
-    export const nullAddress = "0x0000000000000000000000000000000000000000";
-    export const getTokenIcon: (address: string, chainId: number) => string;
-    export const getEmbedLink: (dataUri: string, params?: {
-        [key: string]: string;
-    }) => string;
-    export function findConstantTokenByVault(chainId: number, vaultAddress: string): import("@scom/scom-xchain-swap/store/data/core.ts").TokenConstant;
-    export function findConstantVaultGroupByToken(chainId: number, tokenAddress: string): VaultGroupConstant;
-    export function findConstantVault(vaultGroup: VaultGroupConstant, chainId: number): VaultConstant;
-    export function findConstantToVault(fromChainId: number, tokenAddress: string, toChainId: number): VaultConstant;
-    export function findConstantAllAsset(fromChainId: number): VaultConstant[];
     export * from "@scom/scom-xchain-swap/store/utils.ts";
 }
 /// <amd-module name="@scom/scom-xchain-swap/crosschain-utils/crosschain-utils.types.ts" />
@@ -766,6 +705,7 @@ declare module "@scom/scom-xchain-swap/languages/main.json.ts" {
             tokens: string;
             address: string;
             general: string;
+            the_target_chain_cannot_be_the_same_as_the_source_chain: string;
         };
         "zh-hant": {
             "last_updated_(s)_ago": string;
@@ -830,6 +770,7 @@ declare module "@scom/scom-xchain-swap/languages/main.json.ts" {
             tokens: string;
             address: string;
             general: string;
+            the_target_chain_cannot_be_the_same_as_the_source_chain: string;
         };
         vi: {
             "last_updated_(s)_ago": string;
@@ -894,6 +835,7 @@ declare module "@scom/scom-xchain-swap/languages/main.json.ts" {
             tokens: string;
             address: string;
             general: string;
+            the_target_chain_cannot_be_the_same_as_the_source_chain: string;
         };
     };
     export default _default_2;
