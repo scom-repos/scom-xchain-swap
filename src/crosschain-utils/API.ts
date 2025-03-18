@@ -192,10 +192,16 @@ function findVault(vaultGroup: VaultGroupStore, chainId: number) {
 }
 
 async function getVaultGroups(state: State, isUpdate?: boolean): Promise<VaultGroupStore[]> {
-  const wallet = Wallet.getClientInstance();
-  if (!wallet.address) {
-    // for noto fan when wallet is not connected
-    return getVaultGroupsWithoutWallet(state, isUpdate);
+  try {
+    const crossChainWallet = initCrossChainWallet(state, Wallet.getClientInstance().chainId);
+    if (!crossChainWallet.address) {
+      state.setIsNetworkChanging(true);
+      const rpcWallet = state.getRpcWallet();
+      await rpcWallet.switchNetwork(rpcWallet.chainId);
+      state.setIsNetworkChanging(false);
+    }
+  } catch {
+    state.setIsNetworkChanging(false);
   }
 
   let walletChainId = Wallet.getClientInstance().chainId;
@@ -269,34 +275,6 @@ async function getVaultGroups(state: State, isUpdate?: boolean): Promise<VaultGr
       console.log(`Error on getVaultGroups chainId ${chainId}.`, error, x);
     }
   })
-  state.setVaultGroups(vaultGroupsStore);
-  return vaultGroupsStore;
-}
-
-// Support noto fan if wallet is not connected
-async function getVaultGroupsWithoutWallet(state: State, isUpdate?: boolean): Promise<VaultGroupStore[]> {
-  let walletChainId = Wallet.getClientInstance().chainId;
-  let networks = getNetworksByType(walletChainId);
-  let vaultGroupsStore = state.getVaultGroups();
-
-  if (!isUpdate) return vaultGroupsStore;
-
-  for (let i = 0; i < vaultGroupsStore.length; i++) {
-    const group = vaultGroupsStore[i];
-    await forEachNumberIndexAwait(group.vaults, async (vault, chainId) => {
-      if (networks.every(n => n !== chainId)) return;
-      const wallet = initCrossChainWallet(state, chainId);
-      const vaultContract = new xChainContracts.OSWAP_BridgeVault(wallet, vault.vaultAddress);
-      vaultGroupsStore[i].vaults[chainId].tokenBalance = await vaultContract.lpAssetBalance();
-      vaultGroupsStore[i].vaults[chainId].imbalance = await vaultContract.imbalance();
-      vaultGroupsStore[i].vaults[chainId].ordersLength = (await vaultContract.ordersLength()).toNumber();
-      if (wallet.address) {
-        const tokenContract = new xChainContracts.ERC20(wallet, vault.assetToken.address);
-        vaultGroupsStore[i].vaults[chainId].userTokenAmount = await tokenContract.balanceOf(wallet.address);
-      }
-    });
-  }
-
   state.setVaultGroups(vaultGroupsStore);
   return vaultGroupsStore;
 }

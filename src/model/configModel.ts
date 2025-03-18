@@ -81,14 +81,6 @@ export class ConfigModel {
     this._data.showFooter = value;
   }
 
-  get currentURLHash() {
-    return this._data.currentURLHash ?? '';
-  }
-
-  set currentURLHash(value: string) {
-    this._data.currentURLHash = value;
-  }
-
   get recordUrl() {
     return this._data.recordUrl ?? '';
   }

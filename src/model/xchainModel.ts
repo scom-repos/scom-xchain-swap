@@ -19,6 +19,7 @@ export class XchainModel {
     showModalFees: () => { },
   };
   private module: Module;
+  private currentHash: string;
   private _srcChain: IExtendedNetwork;
   private _desChain: IExtendedNetwork;
   private _fromInputValue: BigNumber;
@@ -41,6 +42,7 @@ export class XchainModel {
     this.options = options;
     this.fromInputValue = new BigNumber(0);
     this.toInputValue = new BigNumber(0);
+    this.currentHash = window.location.hash?.split('?')[0] || '';
   }
 
   getSupportedTokens = (tokens: ITokenObject[], chainId: number) => {
@@ -381,7 +383,7 @@ export class XchainModel {
   }
 
   redirectToken() {
-    if (!this.urlParamsEnabled) return;
+    if (!this.urlParamsEnabled || !window.location.hash.includes(this.currentHash)) return;
     const token = this.fromToken ?? tokenStore.getTokenList(this.chainId).find(v => v.address?.toLowerCase() === this.fromTokenSymbol?.toLowerCase() || v.symbol.toLowerCase() === this.fromTokenSymbol?.toLowerCase());
     let queryRouter: any = {
       chainId: this.chainId || this.state.getChainId(),
@@ -411,7 +413,6 @@ export class XchainModel {
     if (!queryRouter.token) {
       delete queryRouter['token'];
     }
-    if (!this.configModel.currentURLHash || !window.location.hash.includes(this.configModel.currentURLHash)) return;
     const queryString = new URLSearchParams(queryRouter).toString();
     let newURL = window.location.protocol + "//" + window.location.host;
     if (location.hash.split("?")[0]) {

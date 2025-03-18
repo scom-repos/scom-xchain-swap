@@ -138,6 +138,7 @@ export class State {
   vaultGroups = initVaultGroupsStore(VaultGroupList);
   embedderCommissionFee: string;
   approvalModel: ERC20ApprovalModel;
+  isNetworkChanging: boolean = false;
 
   constructor(options: any) {
     this.initData(options);
@@ -307,6 +308,14 @@ export class State {
     this.approvalModel = new ERC20ApprovalModel(wallet, approvalOptions);
     let approvalModelAction = this.approvalModel.getAction();
     return approvalModelAction;
+  }
+
+  setIsNetworkChanging(value: boolean) {
+    this.isNetworkChanging = value;
+  }
+
+  getIsNetworkChanging() {
+    return this.isNetworkChanging;
   }
 }
 

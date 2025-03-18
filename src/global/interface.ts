@@ -27,5 +27,4 @@ export interface IXchainWidgetData {
   defaultInputToken?: ITokenConfig;
   recordUrl?: string;
   urlParamsEnabled?: boolean;
-  currentURLHash?: string;
 }

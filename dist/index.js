@@ -610,6 +610,7 @@ define("@scom/scom-xchain-swap/store/utils.ts", ["require", "exports", "@ijstech
             this.networkMap = {};
             this.networkConfig = [];
             this.vaultGroups = initVaultGroupsStore(core_2.VaultGroupList);
+            this.isNetworkChanging = false;
             this.getNetworkInfo = (chainId) => {
                 return this.networkMap[chainId];
             };
@@ -755,6 +756,12 @@ define("@scom/scom-xchain-swap/store/utils.ts", ["require", "exports", "@ijstech
             this.approvalModel = new eth_wallet_3.ERC20ApprovalModel(wallet, approvalOptions);
             let approvalModelAction = this.approvalModel.getAction();
             return approvalModelAction;
+        }
+        setIsNetworkChanging(value) {
+            this.isNetworkChanging = value;
+        }
+        getIsNetworkChanging() {
+            return this.isNetworkChanging;
         }
     }
     exports.State = State;
@@ -953,10 +960,17 @@ define("@scom/scom-xchain-swap/crosschain-utils/API.ts", ["require", "exports", 
         }
     }
     async function getVaultGroups(state, isUpdate) {
-        const wallet = eth_wallet_4.Wallet.getClientInstance();
-        if (!wallet.address) {
-            // for noto fan when wallet is not connected
-            return getVaultGroupsWithoutWallet(state, isUpdate);
+        try {
+            const crossChainWallet = initCrossChainWallet(state, eth_wallet_4.Wallet.getClientInstance().chainId);
+            if (!crossChainWallet.address) {
+                state.setIsNetworkChanging(true);
+                const rpcWallet = state.getRpcWallet();
+                await rpcWallet.switchNetwork(rpcWallet.chainId);
+                state.setIsNetworkChanging(false);
+            }
+        }
+        catch {
+            state.setIsNetworkChanging(false);
         }
         let walletChainId = eth_wallet_4.Wallet.getClientInstance().chainId;
         let networks = (0, index_5.getNetworksByType)(walletChainId);
@@ -1030,32 +1044,6 @@ define("@scom/scom-xchain-swap/crosschain-utils/API.ts", ["require", "exports", 
         return vaultGroupsStore;
     }
     exports.getVaultGroups = getVaultGroups;
-    // Support noto fan if wallet is not connected
-    async function getVaultGroupsWithoutWallet(state, isUpdate) {
-        let walletChainId = eth_wallet_4.Wallet.getClientInstance().chainId;
-        let networks = (0, index_5.getNetworksByType)(walletChainId);
-        let vaultGroupsStore = state.getVaultGroups();
-        if (!isUpdate)
-            return vaultGroupsStore;
-        for (let i = 0; i < vaultGroupsStore.length; i++) {
-            const group = vaultGroupsStore[i];
-            await (0, index_5.forEachNumberIndexAwait)(group.vaults, async (vault, chainId) => {
-                if (networks.every(n => n !== chainId))
-                    return;
-                const wallet = initCrossChainWallet(state, chainId);
-                const vaultContract = new oswap_cross_chain_bridge_contract_1.Contracts.OSWAP_BridgeVault(wallet, vault.vaultAddress);
-                vaultGroupsStore[i].vaults[chainId].tokenBalance = await vaultContract.lpAssetBalance();
-                vaultGroupsStore[i].vaults[chainId].imbalance = await vaultContract.imbalance();
-                vaultGroupsStore[i].vaults[chainId].ordersLength = (await vaultContract.ordersLength()).toNumber();
-                if (wallet.address) {
-                    const tokenContract = new oswap_cross_chain_bridge_contract_1.Contracts.ERC20(wallet, vault.assetToken.address);
-                    vaultGroupsStore[i].vaults[chainId].userTokenAmount = await tokenContract.balanceOf(wallet.address);
-                }
-            });
-        }
-        state.setVaultGroups(vaultGroupsStore);
-        return vaultGroupsStore;
-    }
 });
 define("@scom/scom-xchain-swap/crosschain-utils/index.ts", ["require", "exports", "@ijstech/eth-wallet", "@scom/scom-commission-proxy-contract", "@scom/scom-xchain-swap/crosschain-utils/API.ts"], function (require, exports, eth_wallet_5, scom_commission_proxy_contract_1, API_1) {
     "use strict";
@@ -2760,10 +2748,6 @@ define("@scom/scom-xchain-swap/formSchema.ts", ["require", "exports", "@scom/sco
             dataSchema: {
                 type: 'object',
                 properties: {
-                    // currentURLHash: {
-                    //     title: '$current_url_hash',
-                    //     type: 'string'
-                    // },
                     // urlParamsEnabled: {
                     //     title: '$enable_url_params',
                     //     type: 'boolean'
@@ -2820,10 +2804,6 @@ define("@scom/scom-xchain-swap/formSchema.ts", ["require", "exports", "@scom/sco
                         type: 'Category',
                         label: '$general',
                         elements: [
-                            // {
-                            //     type: 'Control',
-                            //     scope: '#/properties/currentURLHash'
-                            // },
                             // {
                             //     type: 'Control',
                             //     scope: '#/properties/urlParamsEnabled'
@@ -3044,12 +3024,6 @@ define("@scom/scom-xchain-swap/model/configModel.ts", ["require", "exports", "@i
         }
         set showFooter(value) {
             this._data.showFooter = value;
-        }
-        get currentURLHash() {
-            return this._data.currentURLHash ?? '';
-        }
-        set currentURLHash(value) {
-            this._data.currentURLHash = value;
         }
         get recordUrl() {
             return this._data.recordUrl ?? '';
@@ -3402,6 +3376,7 @@ define("@scom/scom-xchain-swap/model/xchainModel.ts", ["require", "exports", "@s
             this.options = options;
             this.fromInputValue = new eth_contract_1.BigNumber(0);
             this.toInputValue = new eth_contract_1.BigNumber(0);
+            this.currentHash = window.location.hash?.split('?')[0] || '';
         }
         get isFrom() {
             return this._isFrom;
@@ -3688,7 +3663,7 @@ define("@scom/scom-xchain-swap/model/xchainModel.ts", ["require", "exports", "@s
             }
         }
         redirectToken() {
-            if (!this.urlParamsEnabled)
+            if (!this.urlParamsEnabled || !window.location.hash.includes(this.currentHash))
                 return;
             const token = this.fromToken ?? scom_token_list_3.tokenStore.getTokenList(this.chainId).find(v => v.address?.toLowerCase() === this.fromTokenSymbol?.toLowerCase() || v.symbol.toLowerCase() === this.fromTokenSymbol?.toLowerCase());
             let queryRouter = {
@@ -3719,8 +3694,6 @@ define("@scom/scom-xchain-swap/model/xchainModel.ts", ["require", "exports", "@s
             if (!queryRouter.token) {
                 delete queryRouter['token'];
             }
-            if (!this.configModel.currentURLHash || !window.location.hash.includes(this.configModel.currentURLHash))
-                return;
             const queryString = new URLSearchParams(queryRouter).toString();
             let newURL = window.location.protocol + "//" + window.location.host;
             if (location.hash.split("?")[0]) {
@@ -3879,6 +3852,8 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
                 });
             };
             this.onChainChange = async () => {
+                if (this.state.getIsNetworkChanging())
+                    return;
                 this.xchainModel.chainId = this.state.getChainId();
                 scom_token_list_4.tokenStore.updateTokenMapData(this.chainId);
                 if (this.chainId != null && this.chainId != undefined)
@@ -4433,6 +4408,9 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
             this.initModels();
             return this.configModel.getConfigurators();
         }
+        getConfigJson() {
+            return index_21.mainJson;
+        }
         async resetRpcWallet() {
             this.removeRpcWalletEvents();
             const rpcWalletId = await this.state.initRpcWallet(this.defaultChainId);
@@ -4553,6 +4531,7 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
             this.swapButtonText = this.getSwapButtonText();
             this.initExpertModal();
             this.initTransactionModal();
+            this.onConnectWallet = this.getAttribute('onConnectWallet', true) || this.onConnectWallet;
             const lazyLoad = this.getAttribute('lazyLoad', true, false);
             if (!lazyLoad) {
                 const campaignId = this.getAttribute('campaignId', true);
@@ -4566,7 +4545,6 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
                 const showFooter = this.getAttribute('showFooter', true);
                 const recordUrl = this.getAttribute('recordUrl', true);
                 const urlParamsEnabled = this.getAttribute('urlParamsEnabled', true);
-                const currentURLHash = this.getAttribute('currentURLHash', true);
                 let data = {
                     campaignId,
                     commissions,
@@ -4579,7 +4557,6 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
                     showFooter,
                     recordUrl,
                     urlParamsEnabled,
-                    currentURLHash
                 };
                 if (!this.isEmptyData(data)) {
                     await this.setData(data);
@@ -5066,6 +5043,10 @@ define("@scom/scom-xchain-swap", ["require", "exports", "@ijstech/components", "
             return ((0, index_15.isWalletConnected)() && warningMessageText != '');
         }
         async switchNetworkByWallet() {
+            if (this.onConnectWallet) {
+                this.onConnectWallet();
+                return;
+            }
             if (this.mdWallet) {
                 await components_14.application.loadPackage('@scom/scom-wallet-modal', '*');
                 this.mdWallet.networks = this.networks;

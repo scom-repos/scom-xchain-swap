@@ -88,9 +88,8 @@ interface ScomXchainSwapElement extends ControlElement {
   defaultInputToken?: ITokenConfig;
   recordUrl?: string;
   urlParamsEnabled?: boolean;
-  currentURLHash?: string;
+  onConnectWallet?: () => void;
 }
-
 
 declare global {
   namespace JSX {
@@ -192,6 +191,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
   private isVaultEmpty = false;
   private modalSwitchNetwork: Modal;
   private lbSwitchNetwork: Label;
+  onConnectWallet: () => void;
   tag: any = {};
 
   constructor(parent?: Container, options?: ScomXchainSwapElement) {
@@ -398,6 +398,10 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
     return this.configModel.getConfigurators();
   }
 
+  getConfigJson() {
+    return mainJson;
+  }
+
   private async resetRpcWallet() {
     this.removeRpcWalletEvents();
     const rpcWalletId = await this.state.initRpcWallet(this.defaultChainId);
@@ -566,6 +570,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
     this.swapButtonText = this.getSwapButtonText();
     this.initExpertModal();
     this.initTransactionModal();
+    this.onConnectWallet = this.getAttribute('onConnectWallet', true) || this.onConnectWallet;
     const lazyLoad = this.getAttribute('lazyLoad', true, false);
     if (!lazyLoad) {
       const campaignId = this.getAttribute('campaignId', true);
@@ -579,7 +584,6 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
       const showFooter = this.getAttribute('showFooter', true);
       const recordUrl = this.getAttribute('recordUrl', true);
       const urlParamsEnabled = this.getAttribute('urlParamsEnabled', true);
-      const currentURLHash = this.getAttribute('currentURLHash', true);
       let data = {
         campaignId,
         commissions,
@@ -592,7 +596,6 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
         showFooter,
         recordUrl,
         urlParamsEnabled,
-        currentURLHash
       };
       if (!this.isEmptyData(data)) {
         await this.setData(data);
@@ -676,6 +679,7 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
   }
 
   private onChainChange = async () => {
+    if (this.state.getIsNetworkChanging()) return;
     this.xchainModel.chainId = this.state.getChainId();
     tokenStore.updateTokenMapData(this.chainId);
     if (this.chainId != null && this.chainId != undefined)
@@ -1238,6 +1242,10 @@ export default class ScomXchainSwap extends Module implements BlockNoteSpecs {
   }
 
   private async switchNetworkByWallet() {
+    if (this.onConnectWallet) {
+      this.onConnectWallet();
+      return;
+    }
     if (this.mdWallet) {
       await application.loadPackage('@scom/scom-wallet-modal', '*');
       this.mdWallet.networks = this.networks;

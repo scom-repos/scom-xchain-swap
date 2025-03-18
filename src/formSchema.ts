@@ -200,10 +200,6 @@ export function getBuilderSchema() {
         dataSchema: {
             type: 'object',
             properties: {
-                // currentURLHash: {
-                //     title: '$current_url_hash',
-                //     type: 'string'
-                // },
                 // urlParamsEnabled: {
                 //     title: '$enable_url_params',
                 //     type: 'boolean'
@@ -260,10 +256,6 @@ export function getBuilderSchema() {
                     type: 'Category',
                     label: '$general',
                     elements: [
-                        // {
-                        //     type: 'Control',
-                        //     scope: '#/properties/currentURLHash'
-                        // },
                         // {
                         //     type: 'Control',
                         //     scope: '#/properties/urlParamsEnabled'
